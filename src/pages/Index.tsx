@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import Watchlist from '@/components/Watchlist';
+import LottoWatchlist from '@/components/LottoWatchlist';
 import StockSearch from '@/components/StockSearch';
 import Analysis from '@/components/Analysis';
 import About from '@/components/About';
@@ -39,6 +40,7 @@ const Index = () => {
         </div>
         
         <Watchlist />
+        <LottoWatchlist />
         <StockSearch />
         
         {/* Second Advertisement - Medium size before Analysis */}

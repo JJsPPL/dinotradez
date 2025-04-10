@@ -18,6 +18,24 @@ export interface StockData {
   volume: number;
 }
 
+export interface LottoStockData {
+  symbol: string;
+  companyName: string;
+  lastPrice: number;
+  change: number;
+  percentChange: number;
+  volume: number;
+  marketCap: string;
+  marketCapRatio: number;
+  newsflags: number;
+  sVol: number;
+  relativeVolumeStDev: number;
+  sector: string;
+  shares: number;
+  catScale: number;
+  putScale: number;
+}
+
 export interface SearchFormProps {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
