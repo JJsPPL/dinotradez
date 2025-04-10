@@ -16,6 +16,7 @@ const Analysis = () => {
   const [isIndicatorMenuOpen, setIsIndicatorMenuOpen] = useState(false);
   const [showDarkpoolData, setShowDarkpoolData] = useState(true);
   const [showBlockTrades, setShowBlockTrades] = useState(true);
+  const [symbol, setSymbol] = useState('AAPL');
   
   const toggleIndicator = (indicator: string) => {
     if (activeIndicators.includes(indicator)) {
@@ -58,13 +59,13 @@ const Analysis = () => {
           </div>
           
           <ChartToolbar />
-          <ChartRenderer activeChart={activeChart} />
+          <ChartRenderer activeChart={activeChart} symbol={symbol} />
           <AnalysisSummary />
         </div>
         
         <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <TechnicalIndicators />
-          <MovingAverages />
+          <TechnicalIndicators symbol={symbol} />
+          <MovingAverages symbol={symbol} />
           <DarkpoolData 
             showDarkpoolData={showDarkpoolData}
             showBlockTrades={showBlockTrades}
