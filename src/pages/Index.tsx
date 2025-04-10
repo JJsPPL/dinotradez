@@ -19,6 +19,11 @@ const Index = () => {
     toast.success("Welcome to DinoTradez!", {
       description: "Your modern stock trading dashboard",
     });
+    
+    // Log that the app has loaded successfully
+    console.log("DinoTradez app loaded successfully!");
+    console.log("Version: " + (import.meta.env.VITE_APP_VERSION || "1.0.0"));
+    console.log("Build date: " + new Date().toISOString());
   }, []);
 
   console.log("Rendering Index component");

@@ -103,6 +103,14 @@
     console.log("Deployment path:", window.location.pathname);
     console.log("Full URL:", window.location.href);
     console.log("Script base path:", document.currentScript?.src || "unknown");
+    
+    // Add timestamp to force cache refresh
+    const timestamp = Date.now();
+    console.log("Build timestamp:", timestamp);
+    
+    // Detect if GitHub Pages is serving the site
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    console.log("Is GitHub Pages:", isGitHubPages);
   </script>
   
   <script type="module" src="./src/main.tsx"></script>

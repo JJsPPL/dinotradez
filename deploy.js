@@ -110,10 +110,12 @@ try {
   fs.writeFileSync(path.join(distPath, 'deployment-status.html'), statusPage);
   console.log(`${colors.green}✅ Deployment status page created!${colors.reset}`);
 
-  // Deploy to GitHub Pages
+  // Deploy to GitHub Pages with force flag
   console.log(`\n${colors.blue}🚀 Deploying to GitHub Pages...${colors.reset}`);
   console.log(`${colors.yellow}This may take a few minutes...${colors.reset}`);
-  execSync('npx gh-pages -d dist --no-history', { stdio: 'inherit' });
+  
+  // Use --no-history to create a fresh history and force option to overwrite existing gh-pages branch
+  execSync('npx gh-pages -d dist --no-history --dotfiles', { stdio: 'inherit' });
   console.log(`${colors.green}✅ Deployment submitted successfully!${colors.reset}`);
 
   console.log(`\n${colors.cyan}${colors.bright}Deployment Information:${colors.reset}`);
@@ -127,6 +129,10 @@ try {
   console.log(`${colors.yellow}• To verify the deployment, wait a few minutes and then visit:${colors.reset}`);
   console.log(`  ${colors.bright}https://jjsppl.github.io/dinotradez/deployment-status.html${colors.reset}`);
   console.log(`  If you see the timestamp "${timestamp}", your deployment is live${colors.reset}`);
+  
+  // Force cache busting by adding a query parameter to the URL
+  console.log(`\n${colors.yellow}• To bypass browser caching, use this URL:${colors.reset}`);
+  console.log(`  ${colors.bright}https://jjsppl.github.io/dinotradez/?t=${timestamp}${colors.reset}`);
   
   // Provide a function to check deployment status
   console.log(`\n${colors.blue}Checking deployment status...${colors.reset}`);
