@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DinoTradez - Modern Stock Trading Dashboard</title>
+  <meta name="description" content="DinoTradez - A modern stock trading dashboard to monitor market trends and manage your portfolio">
+  <link rel="icon" type="image/ico" href="./favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #000000 !important;
+      color: #ffffff;
+    }
+    #root {
+      min-height: 100vh;
+      background-color: #000000;
+    }
+    .error-fallback {
+      display: none;
+      padding: 2rem;
+      background: #f8d7da;
+      color: #721c24;
+      margin: 1rem;
+      border-radius: 0.5rem;
+    }
+    .loader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-size: 1.5rem;
+      color: #ffffff;
+      background-color: #000000;
+    }
+    .loader-spin {
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border-left-color: #3b82f6;
+      animation: spin 1s linear infinite;
+      margin-right: 12px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 0.8s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+  <!-- Lovable script tag -->
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+  <!-- Cache busting meta tag -->
+  <meta name="deployment-timestamp" content="<?php echo time(); ?>">
+  <script type="module" crossorigin src="./assets/index.CsoaF4mT.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/css/index.CLyAfcGT.css">
+</head>
+<body>
+  <div id="root">
+    <div class="loader">
+      <div class="loader-spin"></div>
+      <span>Loading DinoTradez...</span>
+    </div>
+  </div>
+  <div class="error-fallback">
+    <h2>Loading Error</h2>
+    <p>There was a problem loading the application. Please check the browser console for more details.</p>
+    <button onclick="window.location.reload()">Reload Application</button>
+  </div>
+  
+  <!-- Error handling script -->
+  <script>
+    window.addEventListener('error', function(e) {
+      console.error('Global error caught:', e.error || e.message);
+      document.querySelector('.error-fallback').style.display = 'block';
+    });
+
+    // Show error message if the app doesn't load within 5 seconds
+    setTimeout(function() {
+      const loaderEl = document.querySelector('.loader');
+      if (loaderEl && loaderEl.style.display !== 'none') {
+        console.error('Application failed to load within timeout period');
+        document.querySelector('.error-fallback').style.display = 'block';
+      }
+    }, 5000);
+
+    // Add class to root for fade-in animation
+    window.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('root').classList.add('fade-in');
+    });
+
+    // Log more detailed deployment information
+    console.log("DinoTradez application initializing");
+    console.log("Deployment path:", window.location.pathname);
+    console.log("Full URL:", window.location.href);
+    console.log("Script base path:", document.currentScript?.src || "unknown");
+    
+    // Add timestamp to force cache refresh
+    const timestamp = Date.now();
+    console.log("Build timestamp:", timestamp);
+    
+    // Detect if GitHub Pages is serving the site
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    console.log("Is GitHub Pages:", isGitHubPages);
+  </script>
+  
+</body>
+</html>
+<meta name="build-timestamp" content="1744252738">
