@@ -1,118 +1,315 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DinoTradez - Modern Stock Trading Dashboard</title>
-  <meta name="description" content="DinoTradez - A modern stock trading dashboard to monitor market trends and manage your portfolio">
-  <link rel="icon" type="image/ico" href="./favicon.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #000000 !important;
-      color: #ffffff;
-    }
-    #root {
-      min-height: 100vh;
-      background-color: #000000;
-    }
-    .error-fallback {
-      display: none;
-      padding: 2rem;
-      background: #f8d7da;
-      color: #721c24;
-      margin: 1rem;
-      border-radius: 0.5rem;
-    }
-    .loader {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-size: 1.5rem;
-      color: #ffffff;
-      background-color: #000000;
-    }
-    .loader-spin {
-      border: 4px solid rgba(255, 255, 255, 0.1);
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border-left-color: #3b82f6;
-      animation: spin 1s linear infinite;
-      margin-right: 12px;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .fade-in {
-      opacity: 0;
-      animation: fadeIn 0.8s ease-out forwards;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-  </style>
-  <!-- Lovable script tag -->
-  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-  <!-- Cache busting meta tag -->
-  <meta name="deployment-timestamp" content="<?php echo time(); ?>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DinoTradez - Modern Stock Trading</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <div id="root">
-    <div class="loader">
-      <div class="loader-spin"></div>
-      <span>Loading DinoTradez...</span>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=dino&backgroundColor=1da977" alt="DinoTradez Logo" class="logo">
+                <h1>DinoTradez</h1>
+            </div>
+            <div class="navbar-menu">
+                <a href="#dashboard" class="active">Dashboard</a>
+                <a href="#markets">Markets</a>
+                <a href="#portfolio">Portfolio</a>
+                <a href="#learn">Learn</a>
+            </div>
+            <div class="navbar-actions">
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn btn-outline">Sign In</button>
+                <button class="btn btn-primary">Sign Up</button>
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#dashboard" class="active">Dashboard</a>
+        <a href="#markets">Markets</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#learn">Learn</a>
+        <div class="mobile-menu-actions">
+            <button class="btn btn-outline">Sign In</button>
+            <button class="btn btn-primary">Sign Up</button>
+        </div>
     </div>
-  </div>
-  <div class="error-fallback">
-    <h2>Loading Error</h2>
-    <p>There was a problem loading the application. Please check the browser console for more details.</p>
-    <button onclick="window.location.reload()">Reload Application</button>
-  </div>
-  
-  <!-- Error handling script -->
-  <script>
-    window.addEventListener('error', function(e) {
-      console.error('Global error caught:', e.error || e.message);
-      document.querySelector('.error-fallback').style.display = 'block';
-    });
 
-    // Show error message if the app doesn't load within 5 seconds
-    setTimeout(function() {
-      const loaderEl = document.querySelector('.loader');
-      if (loaderEl && loaderEl.style.display !== 'none') {
-        console.error('Application failed to load within timeout period');
-        document.querySelector('.error-fallback').style.display = 'block';
-      }
-    }, 5000);
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Trade Stocks Like a <span class="highlight">Prehistoric Pro</span></h1>
+                <p>DinoTradez combines modern trading tools with prehistoric strength. Track, analyze, and trade stocks with the power of a T-Rex and the precision of a Velociraptor.</p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-large">Get Started</button>
+                    <button class="btn btn-outline btn-large">View Demo</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=rex&backgroundColor=1da977&scale=120" alt="DinoTradez Mascot">
+            </div>
+        </div>
+    </header>
 
-    // Add class to root for fade-in animation
-    window.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('root').classList.add('fade-in');
-    });
+    <!-- Market Overview -->
+    <section class="market-overview" id="dashboard">
+        <div class="container">
+            <div class="section-header">
+                <h2>Market Overview</h2>
+                <p>Track major indices and trending stocks</p>
+            </div>
+            <div class="market-indices">
+                <div class="market-card">
+                    <div class="market-info">
+                        <h3>S&P 500</h3>
+                        <p class="market-value">4,927.11</p>
+                    </div>
+                    <div class="market-change positive">
+                        <p>+12.37 (0.25%)</p>
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="market-card">
+                    <div class="market-info">
+                        <h3>Nasdaq</h3>
+                        <p class="market-value">15,982.01</p>
+                    </div>
+                    <div class="market-change positive">
+                        <p>+87.64 (0.55%)</p>
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="market-card">
+                    <div class="market-info">
+                        <h3>Dow Jones</h3>
+                        <p class="market-value">38,612.24</p>
+                    </div>
+                    <div class="market-change negative">
+                        <p>-34.12 (0.09%)</p>
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="market-card">
+                    <div class="market-info">
+                        <h3>Russell 2000</h3>
+                        <p class="market-value">2,008.36</p>
+                    </div>
+                    <div class="market-change positive">
+                        <p>+11.98 (0.60%)</p>
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // Log more detailed deployment information
-    console.log("DinoTradez application initializing");
-    console.log("Deployment path:", window.location.pathname);
-    console.log("Full URL:", window.location.href);
-    console.log("Script base path:", document.currentScript?.src || "unknown");
-    
-    // Add timestamp to force cache refresh
-    const timestamp = Date.now();
-    console.log("Build timestamp:", timestamp);
-    
-    // Detect if GitHub Pages is serving the site
-    const isGitHubPages = window.location.hostname.includes('github.io');
-    console.log("Is GitHub Pages:", isGitHubPages);
-  </script>
-  
-  <script type="module" src="./src/main.tsx"></script>
+    <!-- Stock Watchlist Section -->
+    <section class="stock-watchlist" id="markets">
+        <div class="container">
+            <div class="section-header">
+                <h2>Stock Watchlist</h2>
+                <p>Monitor your favorite stocks</p>
+            </div>
+            <!-- This is where the stock-data.js will inject the stock component -->
+            <div class="main-content">
+                <!-- Stock data will be injected here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Highlights -->
+    <section class="portfolio-highlights" id="portfolio">
+        <div class="container">
+            <div class="section-header">
+                <h2>Portfolio Highlights</h2>
+                <p>Track your investment performance</p>
+            </div>
+            <div class="portfolio-overview">
+                <div class="portfolio-card">
+                    <h3>Total Value</h3>
+                    <p class="portfolio-value">$24,618.92</p>
+                    <div class="portfolio-change positive">
+                        <p>+$892.41 (3.76%) today</p>
+                    </div>
+                </div>
+                <div class="portfolio-chart">
+                    <img src="https://via.placeholder.com/600x300?text=Portfolio+Performance+Chart" alt="Portfolio Performance Chart">
+                </div>
+            </div>
+            <div class="portfolio-holdings">
+                <h3>Top Holdings</h3>
+                <div class="holdings-table">
+                    <div class="holdings-header">
+                        <div class="holding-cell">Stock</div>
+                        <div class="holding-cell">Shares</div>
+                        <div class="holding-cell">Avg. Cost</div>
+                        <div class="holding-cell">Current Price</div>
+                        <div class="holding-cell">Market Value</div>
+                        <div class="holding-cell">Gain/Loss</div>
+                    </div>
+                    <div class="holdings-row">
+                        <div class="holding-cell">AAPL</div>
+                        <div class="holding-cell">15</div>
+                        <div class="holding-cell">$152.34</div>
+                        <div class="holding-cell">$169.58</div>
+                        <div class="holding-cell">$2,543.70</div>
+                        <div class="holding-cell positive">+$258.60 (11.31%)</div>
+                    </div>
+                    <div class="holdings-row">
+                        <div class="holding-cell">MSFT</div>
+                        <div class="holding-cell">10</div>
+                        <div class="holding-cell">$278.91</div>
+                        <div class="holding-cell">$307.26</div>
+                        <div class="holding-cell">$3,072.60</div>
+                        <div class="holding-cell positive">+$283.50 (10.17%)</div>
+                    </div>
+                    <div class="holdings-row">
+                        <div class="holding-cell">AMZN</div>
+                        <div class="holding-cell">12</div>
+                        <div class="holding-cell">$103.21</div>
+                        <div class="holding-cell">$118.15</div>
+                        <div class="holding-cell">$1,417.80</div>
+                        <div class="holding-cell positive">+$179.28 (14.47%)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Resources -->
+    <section class="learning-resources" id="learn">
+        <div class="container">
+            <div class="section-header">
+                <h2>DinoLearning</h2>
+                <p>Resources to evolve your trading skills</p>
+            </div>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Stock Basics</h3>
+                    <p>Learn the fundamental concepts of stock trading and investing.</p>
+                    <a href="#" class="resource-link">Start Learning <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Technical Analysis</h3>
+                    <p>Master chart patterns and technical indicators to find trading opportunities.</p>
+                    <a href="#" class="resource-link">Start Learning <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>Fundamental Analysis</h3>
+                    <p>Evaluate companies based on financial statements and business models.</p>
+                    <a href="#" class="resource-link">Start Learning <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Trading Psychology</h3>
+                    <p>Develop the mental fortitude of a T-Rex for trading success.</p>
+                    <a href="#" class="resource-link">Start Learning <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Trade Like a Dinosaur?</h2>
+                <p>Join thousands of traders who have evolved their trading with DinoTradez.</p>
+                <button class="btn btn-primary btn-large">Create Free Account</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="navbar-brand">
+                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=dino&backgroundColor=1da977" alt="DinoTradez Logo" class="logo">
+                        <h2>DinoTradez</h2>
+                    </div>
+                    <p>Modern stock trading with prehistoric power.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#dashboard">Dashboard</a></li>
+                        <li><a href="#markets">Markets</a></li>
+                        <li><a href="#portfolio">Portfolio</a></li>
+                        <li><a href="#learn">Learn</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Webinars</a></li>
+                        <li><a href="#">Podcasts</a></li>
+                        <li><a href="#">Help Center</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Stay Updated</h3>
+                    <p>Subscribe to our newsletter for market insights and trading tips.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 DinoTradez. All rights reserved.</p>
+                <p>Disclaimer: DinoTradez is for informational purposes only. Not financial advice.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="stock-data.js"></script>
 </body>
 </html>
