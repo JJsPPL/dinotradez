@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DinoTradez - Modern Stock Trading</title>
+    <title>DinoTradez - Stock Trading</title>
     <link rel="stylesheet" href="styles.css">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,18 +17,19 @@
     <nav class="navbar">
         <div class="container">
             <div class="navbar-brand">
-                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=dino&backgroundColor=1da977" alt="DinoTradez Logo" class="logo">
+                <img src="phoenix-logo.png" alt="Phoenix Logo" class="logo">
                 <h1>DinoTradez</h1>
             </div>
             <div class="navbar-menu">
                 <a href="#dashboard" class="active">Dashboard</a>
                 <a href="#markets">Markets</a>
-                <a href="#portfolio">Portfolio</a>
-                <a href="#learn">Learn</a>
+                <a href="#lottopicks">Lotto Picks</a>
+                <a href="#bullish">Bullish Watchlist</a>
+                <a href="#bearish">Bearish Watchlist</a>
             </div>
             <div class="navbar-actions">
                 <button class="theme-toggle" id="theme-toggle">
-                    <i class="fas fa-moon"></i>
+                    <i class="fas fa-sun"></i>
                 </button>
                 <button class="btn btn-outline">Sign In</button>
                 <button class="btn btn-primary">Sign Up</button>
@@ -43,8 +44,9 @@
     <div class="mobile-menu" id="mobile-menu">
         <a href="#dashboard" class="active">Dashboard</a>
         <a href="#markets">Markets</a>
-        <a href="#portfolio">Portfolio</a>
-        <a href="#learn">Learn</a>
+        <a href="#lottopicks">Lotto Picks</a>
+        <a href="#bullish">Bullish Watchlist</a>
+        <a href="#bearish">Bearish Watchlist</a>
         <div class="mobile-menu-actions">
             <button class="btn btn-outline">Sign In</button>
             <button class="btn btn-primary">Sign Up</button>
@@ -55,15 +57,8 @@
     <header class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Trade Stocks Like a <span class="highlight">Prehistoric Pro</span></h1>
-                <p>DinoTradez combines modern trading tools with prehistoric strength. Track, analyze, and trade stocks with the power of a T-Rex and the precision of a Velociraptor.</p>
-                <div class="hero-actions">
-                    <button class="btn btn-primary btn-large">Get Started</button>
-                    <button class="btn btn-outline btn-large">View Demo</button>
-                </div>
-            </div>
-            <div class="hero-image">
-                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=rex&backgroundColor=1da977&scale=120" alt="DinoTradez Mascot">
+                <h1>Trade Stocks Like a <span class="highlight">Phoenix</span></h1>
+                <p>DinoTradez combines modern trading tools with power and precision. Track, analyze, and trade stocks with advanced market intelligence.</p>
             </div>
         </div>
     </header>
@@ -202,6 +197,18 @@
                         <h3><i class="fas fa-chart-pie"></i> High Short Interest</h3>
                         <span class="data-source">Source: FINRA (>1M Volume)</span>
                     </div>
+                    <div class="short-interest-filter">
+                        <div class="filter-options">
+                            <label>
+                                <input type="checkbox" id="lotto-filter" checked>
+                                Show Lotto Picks (-90% to -99% change)
+                            </label>
+                            <label>
+                                <input type="checkbox" id="volume-filter" checked>
+                                >1M Volume Only
+                            </label>
+                        </div>
+                    </div>
                     <div class="short-interest-data">
                         <div class="short-interest-header">
                             <div class="short-column">Symbol</div>
@@ -209,11 +216,23 @@
                             <div class="short-column">Change</div>
                             <div class="short-column">Volume</div>
                         </div>
-                        <div class="short-interest-item">
+                        <div class="short-interest-item lotto">
                             <div class="short-column">BBBY</div>
                             <div class="short-column warning">30.02%</div>
-                            <div class="short-column positive">+5.14%</div>
+                            <div class="short-column negative">-93.14%</div>
                             <div class="short-column">10.5M</div>
+                        </div>
+                        <div class="short-interest-item lotto">
+                            <div class="short-column">CVNA</div>
+                            <div class="short-column warning">18.82%</div>
+                            <div class="short-column negative">-96.65%</div>
+                            <div class="short-column">6.2M</div>
+                        </div>
+                        <div class="short-interest-item lotto">
+                            <div class="short-column">SNDL</div>
+                            <div class="short-column warning">16.73%</div>
+                            <div class="short-column negative">-94.78%</div>
+                            <div class="short-column">9.8M</div>
                         </div>
                         <div class="short-interest-item">
                             <div class="short-column">GME</div>
@@ -227,18 +246,6 @@
                             <div class="short-column positive">+2.78%</div>
                             <div class="short-column">15.5M</div>
                         </div>
-                        <div class="short-interest-item">
-                            <div class="short-column">CVNA</div>
-                            <div class="short-column">14.82%</div>
-                            <div class="short-column positive">+1.65%</div>
-                            <div class="short-column">6.2M</div>
-                        </div>
-                        <div class="short-interest-item">
-                            <div class="short-column">UPST</div>
-                            <div class="short-column">11.24%</div>
-                            <div class="short-column negative">-0.87%</div>
-                            <div class="short-column">4.8M</div>
-                        </div>
                     </div>
                     <div class="card-footer">
                         <a href="https://otce.finra.org/otce/equityShortInterest" class="view-all-link" target="_blank">View All Short Interest Data <i class="fas fa-arrow-right"></i></a>
@@ -248,116 +255,261 @@
         </div>
     </section>
 
-    <!-- Portfolio Highlights -->
-    <section class="portfolio-highlights" id="portfolio">
+    <!-- Dark Pool Activity Section -->
+    <section class="data-section" id="darkpool">
         <div class="container">
-            <div class="section-header">
-                <h2>Portfolio Highlights</h2>
-                <p>Track your investment performance</p>
-            </div>
-            <div class="portfolio-overview">
-                <div class="portfolio-card">
-                    <h3>Total Value</h3>
-                    <p class="portfolio-value">$24,618.92</p>
-                    <div class="portfolio-change positive">
-                        <p>+$892.41 (3.76%) today</p>
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>Dark Pool Activity</h2>
+                    <span class="data-source">Latest Dark Pool Data</span>
+                </div>
+                <div class="data-table">
+                    <div class="data-table-header">
+                        <div class="data-col symbol-col">Symbol</div>
+                        <div class="data-col">DP %</div>
+                        <div class="data-col">DP Volume</div>
+                        <div class="data-col">Block Trades</div>
+                    </div>
+                    <div class="data-table-body">
+                        <div class="data-row">
+                            <div class="data-col symbol-col">TSLA</div>
+                            <div class="data-col">48.7%</div>
+                            <div class="data-col">57.73M</div>
+                            <div class="data-col">127</div>
+                        </div>
+                        <div class="data-row">
+                            <div class="data-col symbol-col">AAPL</div>
+                            <div class="data-col">42.8%</div>
+                            <div class="data-col">23.94M</div>
+                            <div class="data-col">87</div>
+                        </div>
+                        <div class="data-row">
+                            <div class="data-col symbol-col">AMZN</div>
+                            <div class="data-col">45.1%</div>
+                            <div class="data-col">21.57M</div>
+                            <div class="data-col">93</div>
+                        </div>
+                        <div class="data-row">
+                            <div class="data-col symbol-col">NVDA</div>
+                            <div class="data-col">46.2%</div>
+                            <div class="data-col">20.11M</div>
+                            <div class="data-col">76</div>
+                        </div>
+                        <div class="data-row">
+                            <div class="data-col symbol-col">GME</div>
+                            <div class="data-col">55.2%</div>
+                            <div class="data-col">3.94M</div>
+                            <div class="data-col">29</div>
+                        </div>
                     </div>
                 </div>
-                <div class="portfolio-chart">
-                    <img src="https://via.placeholder.com/600x300?text=Portfolio+Performance+Chart" alt="Portfolio Performance Chart">
+                <div class="section-footer">
+                    <a href="#" class="view-all-link">View All Dark Pool Data <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
-            <div class="portfolio-holdings">
-                <h3>Top Holdings</h3>
-                <div class="holdings-table">
-                    <div class="holdings-header">
-                        <div class="holding-cell">Stock</div>
-                        <div class="holding-cell">Shares</div>
-                        <div class="holding-cell">Avg. Cost</div>
-                        <div class="holding-cell">Current Price</div>
-                        <div class="holding-cell">Market Value</div>
-                        <div class="holding-cell">Gain/Loss</div>
+        </div>
+    </section>
+
+    <!-- Lotto Picks Section -->
+    <section class="data-section highlight-section" id="lottopicks">
+        <div class="container">
+            <h2 class="section-title">Lotto Stock Picks</h2>
+            <p class="section-subtitle">Stocks with >1M volume and -90% to -99% change</p>
+            <div class="watchlist-table">
+                <div class="table-header">
+                    <div class="table-col symbol-col">Symbol</div>
+                    <div class="table-col">Last</div>
+                    <div class="table-col">Net Chng</div>
+                    <div class="table-col">%Change</div>
+                    <div class="table-col">Shares Avail</div>
+                    <div class="table-col">Shares Auth</div>
+                    <div class="table-col">Market Cap</div>
+                    <div class="table-col">MC/CE Ratio</div>
+                    <div class="table-col">Volume</div>
+                    <div class="table-col">Avg Vol</div>
+                    <div class="table-col">Rel Vol</div>
+                    <div class="table-col">DP %</div>
+                </div>
+                <div class="table-body">
+                    <div class="table-row">
+                        <div class="table-col symbol-col">BBBY</div>
+                        <div class="table-col">0.48</div>
+                        <div class="table-col negative">-5.36</div>
+                        <div class="table-col negative">-91.79%</div>
+                        <div class="table-col">119.0M</div>
+                        <div class="table-col">900.0M</div>
+                        <div class="table-col">57.12M</div>
+                        <div class="table-col">0.28</div>
+                        <div class="table-col">10.52M</div>
+                        <div class="table-col">8.74M</div>
+                        <div class="table-col">1.20</div>
+                        <div class="table-col">59.4%</div>
                     </div>
-                    <div class="holdings-row">
-                        <div class="holding-cell">AAPL</div>
-                        <div class="holding-cell">15</div>
-                        <div class="holding-cell">$152.34</div>
-                        <div class="holding-cell">$169.58</div>
-                        <div class="holding-cell">$2,543.70</div>
-                        <div class="holding-cell positive">+$258.60 (11.31%)</div>
+                    <div class="table-row">
+                        <div class="table-col symbol-col">SNDL</div>
+                        <div class="table-col">0.63</div>
+                        <div class="table-col negative">-11.37</div>
+                        <div class="table-col negative">-94.78%</div>
+                        <div class="table-col">261.7M</div>
+                        <div class="table-col">2.0B</div>
+                        <div class="table-col">164.9M</div>
+                        <div class="table-col">0.54</div>
+                        <div class="table-col">9.8M</div>
+                        <div class="table-col">7.2M</div>
+                        <div class="table-col">1.36</div>
+                        <div class="table-col">47.2%</div>
                     </div>
-                    <div class="holdings-row">
-                        <div class="holding-cell">MSFT</div>
-                        <div class="holding-cell">10</div>
-                        <div class="holding-cell">$278.91</div>
-                        <div class="holding-cell">$307.26</div>
-                        <div class="holding-cell">$3,072.60</div>
-                        <div class="holding-cell positive">+$283.50 (10.17%)</div>
-                    </div>
-                    <div class="holdings-row">
-                        <div class="holding-cell">AMZN</div>
-                        <div class="holding-cell">12</div>
-                        <div class="holding-cell">$103.21</div>
-                        <div class="holding-cell">$118.15</div>
-                        <div class="holding-cell">$1,417.80</div>
-                        <div class="holding-cell positive">+$179.28 (14.47%)</div>
+                    <div class="table-row">
+                        <div class="table-col symbol-col">CVNA</div>
+                        <div class="table-col">9.46</div>
+                        <div class="table-col negative">-104.52</div>
+                        <div class="table-col negative">-91.70%</div>
+                        <div class="table-col">105.4M</div>
+                        <div class="table-col">500.0M</div>
+                        <div class="table-col">997.9M</div>
+                        <div class="table-col">0.87</div>
+                        <div class="table-col">6.2M</div>
+                        <div class="table-col">5.9M</div>
+                        <div class="table-col">1.05</div>
+                        <div class="table-col">52.1%</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Learning Resources -->
-    <section class="learning-resources" id="learn">
+    <!-- Bullish Watchlist Section -->
+    <section class="data-section" id="bullish">
         <div class="container">
-            <div class="section-header">
-                <h2>DinoLearning</h2>
-                <p>Resources to evolve your trading skills</p>
-            </div>
-            <div class="resources-grid">
-                <div class="resource-card">
-                    <div class="resource-icon">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <h3>Stock Basics</h3>
-                    <p>Learn the fundamental concepts of stock trading and investing.</p>
-                    <a href="#" class="resource-link">Start Learning <i class="fas fa-arrow-right"></i></a>
+            <h2 class="section-title">Bullish Watchlist</h2>
+            <p class="section-subtitle">Stocks with high volume and positive momentum</p>
+            <div class="watchlist-table">
+                <div class="table-header">
+                    <div class="table-col symbol-col">Symbol</div>
+                    <div class="table-col">Last</div>
+                    <div class="table-col">Net Chng</div>
+                    <div class="table-col">%Change</div>
+                    <div class="table-col">Shares Avail</div>
+                    <div class="table-col">Shares Auth</div>
+                    <div class="table-col">Market Cap</div>
+                    <div class="table-col">MC/CE Ratio</div>
+                    <div class="table-col">Volume</div>
+                    <div class="table-col">Avg Vol</div>
+                    <div class="table-col">Rel Vol</div>
+                    <div class="table-col">DP %</div>
                 </div>
-                <div class="resource-card">
-                    <div class="resource-icon">
-                        <i class="fas fa-chart-line"></i>
+                <div class="table-body">
+                    <div class="table-row">
+                        <div class="table-col symbol-col">AAPL</div>
+                        <div class="table-col">175.42</div>
+                        <div class="table-col positive">+2.77</div>
+                        <div class="table-col positive">+1.58%</div>
+                        <div class="table-col">15.7B</div>
+                        <div class="table-col">50.0B</div>
+                        <div class="table-col">2.74T</div>
+                        <div class="table-col">28.65</div>
+                        <div class="table-col">55.92M</div>
+                        <div class="table-col">61.54M</div>
+                        <div class="table-col">0.91</div>
+                        <div class="table-col">42.8%</div>
                     </div>
-                    <h3>Technical Analysis</h3>
-                    <p>Master chart patterns and technical indicators to find trading opportunities.</p>
-                    <a href="#" class="resource-link">Start Learning <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="resource-card">
-                    <div class="resource-icon">
-                        <i class="fas fa-building"></i>
+                    <div class="table-row">
+                        <div class="table-col symbol-col">MSFT</div>
+                        <div class="table-col">310.87</div>
+                        <div class="table-col positive">+2.65</div>
+                        <div class="table-col positive">+0.85%</div>
+                        <div class="table-col">7.43B</div>
+                        <div class="table-col">24.0B</div>
+                        <div class="table-col">2.31T</div>
+                        <div class="table-col">12.43</div>
+                        <div class="table-col">23.79M</div>
+                        <div class="table-col">26.18M</div>
+                        <div class="table-col">0.91</div>
+                        <div class="table-col">38.5%</div>
                     </div>
-                    <h3>Fundamental Analysis</h3>
-                    <p>Evaluate companies based on financial statements and business models.</p>
-                    <a href="#" class="resource-link">Start Learning <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="resource-card">
-                    <div class="resource-icon">
-                        <i class="fas fa-brain"></i>
+                    <div class="table-row">
+                        <div class="table-col symbol-col">NVDA</div>
+                        <div class="table-col">681.22</div>
+                        <div class="table-col positive">+10.72</div>
+                        <div class="table-col positive">+1.57%</div>
+                        <div class="table-col">2.47B</div>
+                        <div class="table-col">4.0B</div>
+                        <div class="table-col">1.68T</div>
+                        <div class="table-col">51.24</div>
+                        <div class="table-col">43.52M</div>
+                        <div class="table-col">47.89M</div>
+                        <div class="table-col">0.91</div>
+                        <div class="table-col">46.2%</div>
                     </div>
-                    <h3>Trading Psychology</h3>
-                    <p>Develop the mental fortitude of a T-Rex for trading success.</p>
-                    <a href="#" class="resource-link">Start Learning <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Call to Action -->
-    <section class="cta">
+    
+    <!-- Bearish Watchlist Section -->
+    <section class="data-section" id="bearish">
         <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Trade Like a Dinosaur?</h2>
-                <p>Join thousands of traders who have evolved their trading with DinoTradez.</p>
-                <button class="btn btn-primary btn-large">Create Free Account</button>
+            <h2 class="section-title">Bearish Watchlist</h2>
+            <p class="section-subtitle">Stocks with high volume and negative momentum</p>
+            <div class="watchlist-table">
+                <div class="table-header">
+                    <div class="table-col symbol-col">Symbol</div>
+                    <div class="table-col">Last</div>
+                    <div class="table-col">Net Chng</div>
+                    <div class="table-col">%Change</div>
+                    <div class="table-col">Shares Avail</div>
+                    <div class="table-col">Shares Auth</div>
+                    <div class="table-col">Market Cap</div>
+                    <div class="table-col">MC/CE Ratio</div>
+                    <div class="table-col">Volume</div>
+                    <div class="table-col">Avg Vol</div>
+                    <div class="table-col">Rel Vol</div>
+                    <div class="table-col">DP %</div>
+                </div>
+                <div class="table-body">
+                    <div class="table-row">
+                        <div class="table-col symbol-col">INTC</div>
+                        <div class="table-col">35.67</div>
+                        <div class="table-col negative">-1.75</div>
+                        <div class="table-col negative">-4.68%</div>
+                        <div class="table-col">4.21B</div>
+                        <div class="table-col">10.0B</div>
+                        <div class="table-col">150.17B</div>
+                        <div class="table-col">3.24</div>
+                        <div class="table-col">52.63M</div>
+                        <div class="table-col">43.82M</div>
+                        <div class="table-col">1.20</div>
+                        <div class="table-col">44.3%</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="table-col symbol-col">RIVN</div>
+                        <div class="table-col">10.27</div>
+                        <div class="table-col negative">-0.83</div>
+                        <div class="table-col negative">-7.48%</div>
+                        <div class="table-col">948.3M</div>
+                        <div class="table-col">4.5B</div>
+                        <div class="table-col">9.74B</div>
+                        <div class="table-col">1.36</div>
+                        <div class="table-col">35.28M</div>
+                        <div class="table-col">32.56M</div>
+                        <div class="table-col">1.08</div>
+                        <div class="table-col">52.6%</div>
+                    </div>
+                    <div class="table-row">
+                        <div class="table-col symbol-col">HOOD</div>
+                        <div class="table-col">16.82</div>
+                        <div class="table-col negative">-1.24</div>
+                        <div class="table-col negative">-6.87%</div>
+                        <div class="table-col">729.5M</div>
+                        <div class="table-col">2.5B</div>
+                        <div class="table-col">12.27B</div>
+                        <div class="table-col">2.14</div>
+                        <div class="table-col">18.24M</div>
+                        <div class="table-col">12.38M</div>
+                        <div class="table-col">1.47</div>
+                        <div class="table-col">47.8%</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -365,56 +517,6 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <div class="navbar-brand">
-                        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=dino&backgroundColor=1da977" alt="DinoTradez Logo" class="logo">
-                        <h2>DinoTradez</h2>
-                    </div>
-                    <p>Modern stock trading with prehistoric power.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
-                <div class="footer-links">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#dashboard">Dashboard</a></li>
-                        <li><a href="#markets">Markets</a></li>
-                        <li><a href="#portfolio">Portfolio</a></li>
-                        <li><a href="#learn">Learn</a></li>
-                    </ul>
-                </div>
-                <div class="footer-links">
-                    <h3>Resources</h3>
-                    <ul>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Webinars</a></li>
-                        <li><a href="#">Podcasts</a></li>
-                        <li><a href="#">Help Center</a></li>
-                    </ul>
-                </div>
-                <div class="footer-links">
-                    <h3>Legal</h3>
-                    <ul>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Disclaimer</a></li>
-                        <li><a href="#">Security</a></li>
-                    </ul>
-                </div>
-                <div class="footer-newsletter">
-                    <h3>Stay Updated</h3>
-                    <p>Subscribe to our newsletter for market insights and trading tips.</p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Your email address" required>
-                        <button type="submit" class="btn btn-primary">Subscribe</button>
-                    </form>
-                </div>
-            </div>
             <div class="footer-bottom">
                 <p>&copy; 2025 DinoTradez. All rights reserved.</p>
                 <p>Disclaimer: DinoTradez is for informational purposes only. Not financial advice.</p>
