@@ -7,7 +7,7 @@ const LottoWatchlist = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="mb-10">
           <h2 className="text-3xl font-bold mb-3">Lotto Plays</h2>
-          <p className="text-muted-foreground max-w-2xl">High risk, high potential reward stocks with {'>'}1M volume and significant negative moves</p>
+          <p className="text-muted-foreground max-w-2xl">High risk, high potential reward stocks with {'>'} 1M volume and significant negative moves</p>
         </div>
         
         <div className="rounded-xl border border-gray-800 bg-black/60 shadow-md overflow-hidden">

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { fetchStockData } from '@/utils/stockDataService';
 import { ArrowUp, ArrowDown, Bitcoin, TrendingUp, TrendingDown } from 'lucide-react';

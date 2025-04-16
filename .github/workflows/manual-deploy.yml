@@ -1,0 +1,110 @@
+
+name: Manual GitHub Pages Deployment
+
+# This workflow can be triggered manually from the Actions tab
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Deployment message'
+        required: true
+        default: 'Manual deployment'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          NODE_ENV: production
+          
+      - name: Debug build output
+        run: |
+          echo "Listing dist directory contents:"
+          ls -la dist/
+          echo "Checking for index.html:"
+          cat dist/index.html | head -20
+          echo "Checking asset paths:"
+          grep -r "src=" dist/index.html || echo "No src attributes found"
+          grep -r "href=" dist/index.html || echo "No href attributes found"
+
+      - name: Setup GitHub Pages files
+        run: |
+          # Create .nojekyll file to disable Jekyll processing
+          touch dist/.nojekyll
+          
+          # Create CNAME file for custom domain
+          echo "dinotradez.com" > dist/CNAME
+          
+          # Create 404.html for SPA routing
+          cp dist/index.html dist/404.html
+          
+          # Add timestamp for cache busting
+          TIMESTAMP=$(date +%s)
+          echo "<meta name=\"build-timestamp\" content=\"$TIMESTAMP\">" >> dist/index.html
+          
+          # Create timestamp file to verify deployment
+          echo "Deployed on: $(date -u) with timestamp: $TIMESTAMP" > dist/deploy-timestamp.txt
+          
+          # Create cache control headers
+          cat > dist/_headers <<EOL
+          /*
+            Cache-Control: no-cache, no-store, must-revalidate
+          /assets/*
+            Cache-Control: public, max-age=31536000, immutable
+          EOL
+          
+          echo "Created deployment files with timestamp: $TIMESTAMP"
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          force_orphan: true
+          cname: dinotradez.com
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Deploy to GitHub Pages [skip ci]'
+
+      - name: Clear GitHub Pages cache
+        run: |
+          # Using the GitHub API to request a new build
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/pages/builds
+
+      - name: Deployment Summary
+        run: |
+          TIMESTAMP=$(date +%s)
+          echo "## 🦖 DinoTradez Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "Deployment completed successfully!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Deployment Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployment Message:** ${{ github.event.inputs.message }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployment Timestamp:** ${TIMESTAMP}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployment Time:** $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Important Notes" >> $GITHUB_STEP_SUMMARY
+          echo "- GitHub Pages may take a few minutes to reflect changes" >> $GITHUB_STEP_SUMMARY
+          echo "- Site URL: https://dinotradez.com/" >> $GITHUB_STEP_SUMMARY
+          echo "- Verify deployment at https://dinotradez.com/deployment-status.html" >> $GITHUB_STEP_SUMMARY

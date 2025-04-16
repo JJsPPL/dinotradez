@@ -43,6 +43,11 @@ try {
   fs.writeFileSync(path.join(distPath, '.nojekyll'), '');
   console.log(`${colors.green}✅ .nojekyll file created!${colors.reset}`);
 
+  // Create CNAME file for custom domain
+  console.log(`\n${colors.blue}📄 Creating CNAME file for custom domain...${colors.reset}`);
+  fs.writeFileSync(path.join(distPath, 'CNAME'), 'dinotradez.com');
+  console.log(`${colors.green}✅ CNAME file created for dinotradez.com!${colors.reset}`);
+
   // Create 404.html for SPA routing
   console.log(`\n${colors.blue}📄 Creating 404.html file...${colors.reset}`);
   fs.copyFileSync(indexPath, path.join(distPath, '404.html'));
@@ -121,18 +126,19 @@ try {
   console.log(`\n${colors.cyan}${colors.bright}Deployment Information:${colors.reset}`);
   console.log(`${colors.yellow}• Deployment timestamp: ${timestamp}${colors.reset}`);
   console.log(`${colors.yellow}• Your site should be available at:${colors.reset}`);
-  console.log(`  ${colors.bright}https://jjsppl.github.io/dinotradez/${colors.reset}`);
+  console.log(`  ${colors.bright}https://dinotradez.com/${colors.reset}`);
   
   console.log(`\n${colors.yellow}⚠️ Important Notes:${colors.reset}`);
   console.log(`${colors.yellow}• GitHub Pages deployment typically takes 1-5 minutes to process${colors.reset}`);
+  console.log(`${colors.yellow}• DNS propagation for your custom domain may take up to 24-48 hours${colors.reset}`);
   console.log(`${colors.yellow}• You can check deployment status in the GitHub repository's Actions tab${colors.reset}`);
   console.log(`${colors.yellow}• To verify the deployment, wait a few minutes and then visit:${colors.reset}`);
-  console.log(`  ${colors.bright}https://jjsppl.github.io/dinotradez/deployment-status.html${colors.reset}`);
+  console.log(`  ${colors.bright}https://dinotradez.com/deployment-status.html${colors.reset}`);
   console.log(`  If you see the timestamp "${timestamp}", your deployment is live${colors.reset}`);
   
   // Force cache busting by adding a query parameter to the URL
   console.log(`\n${colors.yellow}• To bypass browser caching, use this URL:${colors.reset}`);
-  console.log(`  ${colors.bright}https://jjsppl.github.io/dinotradez/?t=${timestamp}${colors.reset}`);
+  console.log(`  ${colors.bright}https://dinotradez.com/?t=${timestamp}${colors.reset}`);
   
   // Provide a function to check deployment status
   console.log(`\n${colors.blue}Checking deployment status...${colors.reset}`);
@@ -140,7 +146,7 @@ try {
   
   // Set a timeout to check the deployment after 60 seconds
   setTimeout(() => {
-    checkDeploymentStatus('https://jjsppl.github.io/dinotradez/deploy-timestamp.txt', timestamp);
+    checkDeploymentStatus(`https://dinotradez.com/deploy-timestamp.txt`, timestamp);
   }, 60000);
 
 } catch (error) {
@@ -161,19 +167,21 @@ function checkDeploymentStatus(url, expectedTimestamp) {
       if (data.includes(expectedTimestamp.toString())) {
         console.log(`\n${colors.green}✅ Deployment confirmed live!${colors.reset}`);
         console.log(`${colors.green}Your site is now available at:${colors.reset}`);
-        console.log(`${colors.bright}https://jjsppl.github.io/dinotradez/${colors.reset}`);
+        console.log(`${colors.bright}https://dinotradez.com/${colors.reset}`);
       } else {
         console.log(`\n${colors.yellow}⚠️ Deployment not yet detected or cache not updated.${colors.reset}`);
         console.log(`${colors.yellow}This is normal - GitHub Pages deployments can take up to 10 minutes.${colors.reset}`);
+        console.log(`${colors.yellow}DNS propagation for custom domains can take 24-48 hours.${colors.reset}`);
         console.log(`${colors.yellow}Try visiting your site in incognito mode or after clearing cache:${colors.reset}`);
-        console.log(`${colors.bright}https://jjsppl.github.io/dinotradez/${colors.reset}`);
-        console.log(`${colors.bright}https://jjsppl.github.io/dinotradez/?t=${Date.now()}${colors.reset}`);
+        console.log(`${colors.bright}https://dinotradez.com/${colors.reset}`);
+        console.log(`${colors.bright}https://dinotradez.com/?t=${Date.now()}${colors.reset}`);
       }
     });
   }).on('error', (err) => {
     console.log(`\n${colors.yellow}⚠️ Could not verify deployment:${colors.reset}`, err.message);
     console.log(`${colors.yellow}GitHub Pages may still be processing your deployment.${colors.reset}`);
+    console.log(`${colors.yellow}DNS propagation for your custom domain may take 24-48 hours.${colors.reset}`);
     console.log(`${colors.yellow}Check again in a few minutes at:${colors.reset}`);
-    console.log(`${colors.bright}https://jjsppl.github.io/dinotradez/${colors.reset}`);
+    console.log(`${colors.bright}https://dinotradez.com/${colors.reset}`);
   });
 }
