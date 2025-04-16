@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Info } from 'lucide-react';
+import { Info, ExternalLink } from 'lucide-react';
 import { 
   Card, 
   CardContent, 
@@ -23,9 +23,21 @@ interface AdvertisementProps {
   content: string;
   imageUrl?: string;
   linkUrl?: string;
+  logoUrl?: string;
+  companyName?: string;
+  gradient?: string;
 }
 
-const Advertisement = ({ size, title, content, imageUrl, linkUrl }: AdvertisementProps) => {
+const Advertisement = ({ 
+  size, 
+  title, 
+  content, 
+  imageUrl, 
+  linkUrl, 
+  logoUrl, 
+  companyName,
+  gradient = "from-gray-900 to-black" 
+}: AdvertisementProps) => {
   // Map the size to tailwind classes to maintain the same dimensions
   const sizeClasses = {
     small: 'max-w-[300px] min-h-[100px]',
@@ -34,7 +46,7 @@ const Advertisement = ({ size, title, content, imageUrl, linkUrl }: Advertisemen
   };
   
   return (
-    <Card className={`relative backdrop-blur-md bg-black/80 border-gray-800 ${sizeClasses[size]}`}>
+    <Card className={`relative backdrop-blur-md bg-gradient-to-br ${gradient} border-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 ${sizeClasses[size]}`}>
       <div className="absolute top-2 right-2 z-10">
         <Tooltip>
           <TooltipTrigger asChild>
@@ -49,7 +61,17 @@ const Advertisement = ({ size, title, content, imageUrl, linkUrl }: Advertisemen
         </Tooltip>
       </div>
       
-      <CardHeader className="pb-0 pt-4">
+      <CardHeader className="pb-2 pt-4">
+        {logoUrl && companyName && (
+          <div className="flex items-center mb-2">
+            <img 
+              src={logoUrl} 
+              alt={companyName} 
+              className="h-6 w-6 mr-2 rounded-sm object-contain" 
+            />
+            <span className="text-sm font-medium text-gray-300">{companyName}</span>
+          </div>
+        )}
         <CardTitle className="text-lg font-medium text-white">{title}</CardTitle>
       </CardHeader>
       
@@ -57,11 +79,11 @@ const Advertisement = ({ size, title, content, imageUrl, linkUrl }: Advertisemen
         <p className="text-sm text-gray-300">{content}</p>
         
         {imageUrl && (
-          <div className="mt-3 mb-2">
+          <div className="mt-3 mb-2 overflow-hidden rounded-md">
             <img 
               src={imageUrl} 
               alt={title} 
-              className="w-full h-auto rounded-md" 
+              className="w-full h-auto object-cover hover:scale-105 transition-transform duration-500" 
             />
           </div>
         )}
@@ -70,16 +92,17 @@ const Advertisement = ({ size, title, content, imageUrl, linkUrl }: Advertisemen
       {linkUrl && (
         <CardFooter className="pt-0">
           <Button 
-            variant="link" 
-            className="px-0 text-primary hover:text-primary/90 text-sm"
+            variant="outline" 
+            className="px-4 py-2 text-primary border border-primary/40 hover:bg-primary/10 hover:text-primary/90 text-sm flex items-center gap-1 w-full justify-center"
             asChild
           >
             <a 
               href={linkUrl} 
               target="_blank" 
               rel="noopener noreferrer"
+              className="flex items-center"
             >
-              Learn More →
+              Learn More <ExternalLink className="ml-1 h-3 w-3" />
             </a>
           </Button>
         </CardFooter>

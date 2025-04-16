@@ -12,56 +12,7 @@
   color: #ffffff;
 }
 
-/* Advertisement containers */
-.ad-container-small {
-  background-color: rgba(20, 20, 20, 0.8);
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 10px;
-  margin: 10px 0;
-  max-width: 300px;
-  min-height: 100px;
-  overflow: hidden;
-  position: relative;
-  backdrop-filter: blur(4px);
-}
-
-.ad-container-medium {
-  background-color: rgba(20, 20, 20, 0.8);
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 15px;
-  margin: 15px 0;
-  max-width: 500px;
-  min-height: 150px;
-  overflow: hidden;
-  position: relative;
-  backdrop-filter: blur(4px);
-}
-
-.ad-container-large {
-  background-color: rgba(20, 20, 20, 0.8);
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 20px;
-  margin: 20px 0;
-  max-width: 800px;
-  min-height: 200px;
-  overflow: hidden;
-  position: relative;
-  backdrop-filter: blur(4px);
-}
-
-.ad-label {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #ccc;
-  font-size: 10px;
-  padding: 2px 5px;
-  border-radius: 3px;
-}
+/* Advertisement styles are now handled by the component */
 
 /* Debug information */
 .debug-info {
@@ -108,4 +59,26 @@ p {
   background-color: rgba(20, 20, 20, 0.7);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(75, 75, 75, 0.3);
+}
+
+/* Logo styles */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo {
+  height: 2rem;
+  width: auto;
+}
+
+/* Advertisement animations */
+.ad-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ad-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }

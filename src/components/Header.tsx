@@ -58,7 +58,11 @@ const Header = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <TrendingUp className="h-6 w-6 text-primary animate-pulse" />
+            <img 
+              src="/lovable-uploads/9bd8009a-db40-4207-a830-4f76a1843661.png" 
+              alt="DinoTradez Logo" 
+              className="h-8 w-8 text-primary"
+            />
             <span className="text-xl font-bold text-gray-200">DinoTradez</span>
           </div>
           
