@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { fetchStockData } from '@/utils/stockDataService';
-import { ArrowUp, ArrowDown, Bitcoin, TrendingUp, Gold } from 'lucide-react';
+import { ArrowUp, ArrowDown, Bitcoin, TrendingUp, TrendingDown } from 'lucide-react';
 
 interface TickerItem {
   symbol: string;
@@ -32,7 +31,6 @@ const StockTicker = () => {
           .map(result => result.value)
           .filter(data => data && data.symbol);
         
-        // Add type information for special assets
         const enhancedResults = successfulResults.map(item => {
           let type: 'stock' | 'crypto' | 'commodity' | 'bond' = 'stock';
           
@@ -57,7 +55,6 @@ const StockTicker = () => {
     
     loadTickerData();
     
-    // Auto-refresh every 5 minutes
     const interval = setInterval(() => {
       loadTickerData();
     }, 300000);
@@ -80,7 +77,7 @@ const StockTicker = () => {
           {tickerData.map((item) => (
             <div key={item.symbol} className="ticker-item">
               {item.type === 'crypto' && <Bitcoin className="h-3 w-3 inline mr-1 text-orange-400" />}
-              {item.type === 'commodity' && <Gold className="h-3 w-3 inline mr-1 text-yellow-400" />}
+              {item.type === 'commodity' && <TrendingDown className="h-3 w-3 inline mr-1 text-yellow-400" />}
               {item.type === 'bond' && <TrendingUp className="h-3 w-3 inline mr-1 text-blue-400" />}
               <span className="font-medium mr-2">{item.symbol}</span>
               <span>${item.price.toFixed(2)}</span>
@@ -95,11 +92,10 @@ const StockTicker = () => {
             </div>
           ))}
           
-          {/* Repeat the ticker items for a seamless loop */}
           {tickerData.map((item) => (
             <div key={`repeat-${item.symbol}`} className="ticker-item">
               {item.type === 'crypto' && <Bitcoin className="h-3 w-3 inline mr-1 text-orange-400" />}
-              {item.type === 'commodity' && <Gold className="h-3 w-3 inline mr-1 text-yellow-400" />}
+              {item.type === 'commodity' && <TrendingDown className="h-3 w-3 inline mr-1 text-yellow-400" />}
               {item.type === 'bond' && <TrendingUp className="h-3 w-3 inline mr-1 text-blue-400" />}
               <span className="font-medium mr-2">{item.symbol}</span>
               <span>${item.price.toFixed(2)}</span>
