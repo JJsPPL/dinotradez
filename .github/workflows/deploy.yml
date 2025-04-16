@@ -47,6 +47,9 @@ jobs:
           # Create .nojekyll file to disable Jekyll processing
           touch dist/.nojekyll
           
+          # Create CNAME file for custom domain
+          echo "dinotradez.com" > dist/CNAME
+          
           # Create 404.html for SPA routing
           cp dist/index.html dist/404.html
           
@@ -118,7 +121,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           force_orphan: true
-          cname: ${{ secrets.CNAME }}
+          cname: dinotradez.com
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
           commit_message: 'Deploy to GitHub Pages [skip ci]'
@@ -143,6 +146,6 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Important Notes" >> $GITHUB_STEP_SUMMARY
           echo "- GitHub Pages may take a few minutes to reflect changes" >> $GITHUB_STEP_SUMMARY
-          echo "- Site URL: https://jjsppl.github.io/dinotradez/" >> $GITHUB_STEP_SUMMARY
-          echo "- Verify deployment at https://jjsppl.github.io/dinotradez/deployment-status.html" >> $GITHUB_STEP_SUMMARY
-          echo "- Check timestamp file at https://jjsppl.github.io/dinotradez/deploy-timestamp.txt" >> $GITHUB_STEP_SUMMARY
+          echo "- Site URL: https://dinotradez.com/" >> $GITHUB_STEP_SUMMARY
+          echo "- Verify deployment at https://dinotradez.com/deployment-status.html" >> $GITHUB_STEP_SUMMARY
+          echo "- Check timestamp file at https://dinotradez.com/deploy-timestamp.txt" >> $GITHUB_STEP_SUMMARY
