@@ -66,7 +66,7 @@ const MarketIntelligence = () => {
                 <AlertTriangle className="h-5 w-5 text-amber-500 mr-2" />
                 <h3 className="text-lg font-semibold">High Short Interest</h3>
               </div>
-              <span className="text-xs text-gray-400">Source: FINRA (>1M Volume)</span>
+              <span className="text-xs text-gray-400">Source: FINRA ({'>'}1M Volume)</span>
             </div>
             
             <div className="p-3 border-b border-gray-800">
