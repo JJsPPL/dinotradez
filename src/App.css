@@ -54,6 +54,31 @@ p {
   color: #ef4444;
 }
 
+/* Price change animation */
+@keyframes price-flash-positive {
+  0% { background-color: rgba(34, 197, 94, 0); }
+  50% { background-color: rgba(34, 197, 94, 0.2); }
+  100% { background-color: rgba(34, 197, 94, 0); }
+}
+
+@keyframes price-flash-negative {
+  0% { background-color: rgba(239, 68, 68, 0); }
+  50% { background-color: rgba(239, 68, 68, 0.2); }
+  100% { background-color: rgba(239, 68, 68, 0); }
+}
+
+.price-flash-positive {
+  animation: price-flash-positive 2s ease;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.price-flash-negative {
+  animation: price-flash-negative 2s ease;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
 /* Additional styling for glass effect */
 .glass {
   background-color: rgba(20, 20, 20, 0.7);
@@ -81,4 +106,83 @@ p {
 .ad-hover:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Stock card special effects */
+.stock-card {
+  transition: all 0.3s ease;
+}
+
+.stock-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.stock-data-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(75, 75, 75, 0.2);
+}
+
+.stock-data-label {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.stock-data-value {
+  font-weight: 500;
+}
+
+.pulse-dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  display: inline-block;
+  margin-right: 6px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+  }
+  
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+/* Stock ticker styles */
+.ticker-wrap {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.ticker {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker 30s linear infinite;
+  padding-right: 100%;
+}
+
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+@keyframes ticker {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-100%, 0, 0); }
 }

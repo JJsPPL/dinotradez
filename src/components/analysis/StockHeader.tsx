@@ -4,6 +4,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Info, RefreshCw } from 'lucide-react';
 import { fetchStockData, StockQuote } from '@/utils/stockDataService';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 const StockHeader = () => {
   const [stockData, setStockData] = useState<StockQuote | null>(null);
@@ -12,6 +13,14 @@ const StockHeader = () => {
 
   useEffect(() => {
     loadStockData();
+    
+    // Set up auto-refresh every 5 minutes
+    const refreshInterval = setInterval(() => {
+      console.log("Auto-refreshing stock data...");
+      loadStockData();
+    }, 300000); // 5 minutes
+    
+    return () => clearInterval(refreshInterval);
   }, []);
 
   const loadStockData = async () => {
@@ -19,8 +28,10 @@ const StockHeader = () => {
     try {
       const data = await fetchStockData(symbol);
       setStockData(data);
+      console.log("Stock data loaded:", data);
     } catch (error) {
       console.error('Error loading stock data:', error);
+      toast.error(`Could not load data for ${symbol}`);
     } finally {
       setLoading(false);
     }
@@ -57,8 +68,8 @@ const StockHeader = () => {
         "ml-4 text-sm font-medium flex items-center",
         (stockData?.change || 0) >= 0 ? "text-green-400" : "text-red-400"
       )}>
-        ${stockData?.price.toFixed(2) || "173.57"} {(stockData?.percentChange || 0) >= 0 ? "+" : ""}
-        {stockData?.percentChange.toFixed(2) || "1.37"}%
+        ${stockData?.price?.toFixed(2) || "173.57"} {(stockData?.percentChange || 0) >= 0 ? "+" : ""}
+        {stockData?.percentChange?.toFixed(2) || "1.37"}%
       </div>
       {loading ? (
         <RefreshCw className="ml-2 h-3 w-3 animate-spin text-gray-400" />

@@ -1,5 +1,5 @@
-
 import axios from 'axios';
+import API_CONFIG from '@/config/api';
 
 export interface StockQuote {
   symbol: string;
@@ -25,47 +25,61 @@ export const formatNumber = (num: number): string => {
   return num.toString();
 };
 
-// Fetch stock data using Yahoo Finance API
-export async function getStockData(symbol: string): Promise<StockQuote | null> {
-  const options = {
-    method: 'GET',
-    url: `https://yfapi.net/v6/finance/quote`,
-    params: { symbols: symbol },
-    headers: {
-      'x-api-key': 'YOUR_API_KEY' // Replace with your actual API key
-    }
-  };
-
+// Fetch real stock data from Alpha Vantage
+export async function getAlphaVantageStockData(symbol: string): Promise<StockQuote | null> {
   try {
-    const response = await axios.request(options);
-    const result = response.data.quoteResponse.result[0];
+    // Global Quote endpoint for current price data
+    const quoteUrl = `${API_CONFIG.alphaVantage.baseUrl}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_CONFIG.alphaVantage.apiKey}`;
+    const quoteResponse = await axios.get(quoteUrl);
+    const quoteData = quoteResponse.data['Global Quote'];
     
-    if (!result) {
-      console.warn(`No data found for symbol: ${symbol}`);
+    if (!quoteData || !quoteData['01. symbol']) {
+      console.warn(`No quote data found for ${symbol}`);
       return null;
     }
-
-    return {
-      symbol: result.symbol,
-      name: result.longName || result.shortName,
-      price: result.regularMarketPrice,
-      change: result.regularMarketChange,
-      percentChange: result.regularMarketChangePercent,
-      high52w: result.fiftyTwoWeekHigh,
-      low52w: result.fiftyTwoWeekLow,
-      dayHigh: result.regularMarketDayHigh,
-      dayLow: result.regularMarketDayLow,
-      closePrice: result.regularMarketPreviousClose,
-      marketCap: formatNumber(result.marketCap || 0),
-      volume: result.regularMarketVolume
+    
+    // Overview endpoint for company information
+    const overviewUrl = `${API_CONFIG.alphaVantage.baseUrl}?function=OVERVIEW&symbol=${symbol}&apikey=${API_CONFIG.alphaVantage.apiKey}`;
+    const overviewResponse = await axios.get(overviewUrl);
+    const overviewData = overviewResponse.data;
+    
+    const price = parseFloat(quoteData['05. price']);
+    const previousClose = parseFloat(quoteData['08. previous close']);
+    const change = parseFloat(quoteData['09. change']);
+    const percentChange = parseFloat(quoteData['10. change percent'].replace('%', ''));
+    const volume = parseInt(quoteData['06. volume']);
+    
+    let marketCap = 'N/A';
+    if (overviewData && overviewData.MarketCapitalization) {
+      marketCap = formatNumber(parseFloat(overviewData.MarketCapitalization));
+    }
+    
+    // Create stock data object
+    const stockData: StockQuote = {
+      symbol: quoteData['01. symbol'],
+      name: overviewData?.Name || symbol,
+      price: price,
+      change: change,
+      percentChange: percentChange,
+      closePrice: previousClose,
+      volume: volume,
+      marketCap: marketCap,
+      // These fields might not be available directly from Alpha Vantage free tier
+      // We'll keep mock data for them for now
+      high52w: price * 1.2,
+      low52w: price * 0.8,
+      dayHigh: parseFloat(quoteData['03. high']),
+      dayLow: parseFloat(quoteData['04. low'])
     };
+    
+    return stockData;
   } catch (error) {
-    console.error('Error fetching stock data:', error);
+    console.error('Error fetching Alpha Vantage data:', error);
     return null;
   }
 }
 
-// Alternative method using rapid API for Yahoo Finance
+// Alternative method using Yahoo Finance API (through RapidAPI)
 export async function getStockDataRapidAPI(symbol: string): Promise<StockQuote | null> {
   const options = {
     method: 'GET',
@@ -175,13 +189,13 @@ export function getMockStockData(symbol: string): StockQuote {
 // Main function to get stock data with fallback options
 export async function fetchStockData(symbol: string): Promise<StockQuote> {
   try {
-    // Try the public API first (no API key required)
+    // Try Alpha Vantage first
+    const alphaVantageData = await getAlphaVantageStockData(symbol);
+    if (alphaVantageData) return alphaVantageData;
+    
+    // If Alpha Vantage fails, try the public API 
     const publicData = await getStockDataPublic(symbol);
     if (publicData) return publicData;
-    
-    // If public API fails, try RapidAPI if key is provided
-    // const rapidData = await getStockDataRapidAPI(symbol);
-    // if (rapidData) return rapidData;
     
     // If all APIs fail, use mock data
     console.warn(`Using mock data for ${symbol}`);

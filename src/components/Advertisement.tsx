@@ -46,7 +46,7 @@ const Advertisement = ({
   };
   
   return (
-    <Card className={`relative backdrop-blur-md bg-gradient-to-br ${gradient} border-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 ${sizeClasses[size]}`}>
+    <Card className={`relative backdrop-blur-md bg-gradient-to-br ${gradient} border-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 ad-hover ${sizeClasses[size]}`}>
       <div className="absolute top-2 right-2 z-10">
         <Tooltip>
           <TooltipTrigger asChild>
@@ -67,7 +67,7 @@ const Advertisement = ({
             <img 
               src={logoUrl} 
               alt={companyName} 
-              className="h-6 w-6 mr-2 rounded-sm object-contain" 
+              className="h-6 w-6 mr-2 rounded-sm object-contain bg-white/10 p-0.5" 
             />
             <span className="text-sm font-medium text-gray-300">{companyName}</span>
           </div>
