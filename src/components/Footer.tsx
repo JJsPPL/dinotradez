@@ -127,9 +127,16 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="text-xs text-gray-400 text-center mt-8">
-          <p>Stock data provided for educational purposes only. Not financial advice.</p>
-          <p className="mt-1">Market data delayed by at least 15 minutes. DinoTradez is not a registered broker-dealer or investment advisor.</p>
+        <div className="text-xs text-gray-400 text-center mt-8 max-w-4xl mx-auto">
+          <div className="mb-4">
+            <h5 className="text-sm text-white mb-2">Important Notice:</h5>
+            <p className="mb-2">The use of DinoTradez site does not guarantee profitable results. This site should not be used as a standalone analysis tool. It is essential to combine it with other forms of analysis, such as fundamental analysis, technical analysis, risk management strategies, and awareness of current market conditions. Always conduct thorough research.</p>
+            <p>Note: The effectiveness of DinoTradez site can vary based on market conditions and individual trading styles. It's crucial to test strategies thoroughly using historical data before applying them in live trading scenarios.</p>
+          </div>
+          <div>
+            <h5 className="text-sm text-white mb-2">Disclaimer:</h5>
+            <p>"Trading financial instruments involves substantial risk and may not be suitable for all investors. Past performance is not indicative of future results. This website is provided for informational, educational and most importantly entertainment purposes only and should not be considered investment advice. Always conduct your own research before making any financial decisions. DinoTradez is not liable for your actions."</p>
+          </div>
         </div>
       </div>
     </footer>

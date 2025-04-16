@@ -1,37 +1,20 @@
 
 import React from 'react';
-import { Search } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 
-const Watchlist = () => {
+const Bullish = () => {
   return (
-    <section className="py-16 bg-gradient-to-b from-secondary/30 to-background" id="watchlist">
+    <section className="py-16 bg-gradient-to-b from-background to-green-950/20" id="bullish">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="mb-10">
-          <h2 className="text-3xl font-bold mb-3">Stock Watchlist</h2>
-          <p className="text-muted-foreground max-w-2xl">Monitor your favorite stocks with real-time data and analysis</p>
+        <div className="flex items-center mb-8">
+          <TrendingUp className="h-8 w-8 text-green-500 mr-3" />
+          <div>
+            <h2 className="text-3xl font-bold">Bullish</h2>
+            <p className="text-muted-foreground">Stocks with high volume and positive momentum</p>
+          </div>
         </div>
         
         <div className="rounded-xl border border-gray-800 bg-black/60 shadow-md overflow-hidden">
-          <div className="p-4 border-b border-gray-800 flex flex-wrap gap-4 justify-between">
-            <div className="relative w-full md:w-80">
-              <Search className="absolute top-1/2 transform -translate-y-1/2 left-3 h-4 w-4 text-gray-400" />
-              <input 
-                type="text" 
-                placeholder="Add stock symbol (e.g. AAPL)" 
-                className="w-full bg-gray-900 border border-gray-800 rounded-lg pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-              />
-            </div>
-            
-            <div className="flex gap-2 w-full md:w-auto">
-              <button className="px-3 py-2 bg-primary/90 hover:bg-primary text-white text-sm rounded-lg flex-1 md:flex-auto">
-                Add to Watchlist
-              </button>
-              <button className="px-3 py-2 bg-gray-800 hover:bg-gray-700 text-white text-sm rounded-lg flex-1 md:flex-auto">
-                Clear All
-              </button>
-            </div>
-          </div>
-          
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -70,10 +53,26 @@ const Watchlist = () => {
                   <td className="p-3 text-gray-300">42.8%</td>
                 </tr>
                 <tr className="hover:bg-gray-800/30">
+                  <td className="p-3 font-medium">MSFT</td>
+                  <td className="p-3">310.87</td>
+                  <td className="p-3 text-green-400">+2.65</td>
+                  <td className="p-3 text-green-400">+0.85%</td>
+                  <td className="p-3 text-gray-300">0.96</td>
+                  <td className="p-3 text-red-400">-0.03</td>
+                  <td className="p-3 text-gray-300">7.43B</td>
+                  <td className="p-3 text-gray-300">24.0B</td>
+                  <td className="p-3 text-gray-300">2.31T</td>
+                  <td className="p-3 text-gray-300">12.43</td>
+                  <td className="p-3 text-gray-300">23.79M</td>
+                  <td className="p-3 text-gray-300">26.18M</td>
+                  <td className="p-3 text-gray-300">0.91</td>
+                  <td className="p-3 text-gray-300">38.5%</td>
+                </tr>
+                <tr className="hover:bg-gray-800/30">
                   <td className="p-3 font-medium">NVDA</td>
                   <td className="p-3">681.22</td>
                   <td className="p-3 text-green-400">+10.72</td>
-                  <td className="p-3 text-green-400">+1.60%</td>
+                  <td className="p-3 text-green-400">+1.57%</td>
                   <td className="p-3 text-gray-300">1.84</td>
                   <td className="p-3 text-green-400">+0.12</td>
                   <td className="p-3 text-gray-300">2.47B</td>
@@ -85,22 +84,6 @@ const Watchlist = () => {
                   <td className="p-3 text-gray-300">0.91</td>
                   <td className="p-3 text-gray-300">46.2%</td>
                 </tr>
-                <tr className="hover:bg-gray-800/30">
-                  <td className="p-3 font-medium">TSLA</td>
-                  <td className="p-3">273.58</td>
-                  <td className="p-3 text-red-400">-7.41</td>
-                  <td className="p-3 text-red-400">-2.64%</td>
-                  <td className="p-3 text-gray-300">2.76</td>
-                  <td className="p-3 text-green-400">+0.35</td>
-                  <td className="p-3 text-gray-300">3.19B</td>
-                  <td className="p-3 text-gray-300">6.0B</td>
-                  <td className="p-3 text-gray-300">872.48B</td>
-                  <td className="p-3 text-gray-300">18.75</td>
-                  <td className="p-3 text-gray-300">118.54M</td>
-                  <td className="p-3 text-gray-300">97.12M</td>
-                  <td className="p-3 text-gray-300">1.22</td>
-                  <td className="p-3 text-gray-300">48.7%</td>
-                </tr>
               </tbody>
             </table>
           </div>
@@ -110,4 +93,4 @@ const Watchlist = () => {
   );
 };
 
-export default Watchlist;
+export default Bullish;

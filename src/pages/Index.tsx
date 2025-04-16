@@ -10,6 +10,9 @@ import Analysis from '@/components/Analysis';
 import About from '@/components/About';
 import Footer from '@/components/Footer';
 import Advertisement from '@/components/Advertisement';
+import MarketIntelligence from '@/components/MarketIntelligence';
+import Bullish from '@/components/Bullish';
+import Bearish from '@/components/Bearish';
 import { toast } from 'sonner';
 
 const Index = () => {
@@ -26,8 +29,6 @@ const Index = () => {
     console.log("Version: " + (import.meta.env.VITE_APP_VERSION || "1.0.0"));
     console.log("Build date: " + new Date().toISOString());
   }, []);
-
-  console.log("Rendering Index component");
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -51,6 +52,8 @@ const Index = () => {
         
         <Watchlist />
         <LottoWatchlist />
+        <Bullish />
+        <Bearish />
         <StockSearch />
         
         {/* Second Advertisement - Medium size before Analysis */}
@@ -69,6 +72,8 @@ const Index = () => {
         
         <Analysis />
         
+        <MarketIntelligence />
+        
         {/* Third Advertisement - Large size before About */}
         <div className="container mx-auto px-4 md:px-6">
           <Advertisement 
@@ -79,6 +84,7 @@ const Index = () => {
             logoUrl="/lovable-uploads/9bd8009a-db40-4207-a830-4f76a1843661.png"
             companyName="DinoTradez"
             gradient="from-green-900 to-black"
+            imageUrl="/lovable-uploads/a1126345-ebc9-41de-b760-861b43474e3d.png"
           />
         </div>
         
