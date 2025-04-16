@@ -11,6 +11,20 @@ interface TickerItem {
   type?: 'stock' | 'crypto' | 'commodity' | 'bond';
 }
 
+// Mock data to use as fallback when API calls fail
+const mockTickerData: TickerItem[] = [
+  { symbol: 'AAPL', price: 175.42, change: 1.37, percentChange: 0.79, type: 'stock' },
+  { symbol: 'MSFT', price: 310.87, change: 2.65, percentChange: 0.86, type: 'stock' },
+  { symbol: 'GOOGL', price: 142.76, change: 2.21, percentChange: 1.57, type: 'stock' },
+  { symbol: 'AMZN', price: 129.83, change: 1.36, percentChange: 1.06, type: 'stock' },
+  { symbol: 'NVDA', price: 681.22, change: 10.72, percentChange: 1.60, type: 'stock' },
+  { symbol: 'META', price: 324.62, change: 4.52, percentChange: 1.41, type: 'stock' },
+  { symbol: 'TSLA', price: 273.58, change: -7.41, percentChange: -2.64, type: 'stock' },
+  { symbol: 'BTC', price: 42871.35, change: 426.18, percentChange: 1.00, type: 'crypto' },
+  { symbol: 'GLD', price: 183.27, change: -0.43, percentChange: -0.23, type: 'commodity' },
+  { symbol: 'TNX', price: 4.328, change: 0.036, percentChange: 0.84, type: 'bond' }
+];
+
 const StockTicker = () => {
   const [tickerData, setTickerData] = useState<TickerItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -24,6 +38,7 @@ const StockTicker = () => {
     const loadTickerData = async () => {
       setLoading(true);
       try {
+        console.log('Fetching stock data...');
         const promises = popularSymbols.map(symbol => fetchStockData(symbol));
         const results = await Promise.allSettled(promises);
         
@@ -46,9 +61,17 @@ const StockTicker = () => {
           return { ...item, type };
         });
         
-        setTickerData(enhancedResults as TickerItem[]);
+        if (enhancedResults.length > 0) {
+          console.log('Successfully loaded ticker data:', enhancedResults);
+          setTickerData(enhancedResults as TickerItem[]);
+        } else {
+          console.warn('No successful API results, falling back to mock data');
+          setTickerData(mockTickerData);
+        }
       } catch (error) {
         console.error('Failed to load ticker data:', error);
+        // Fall back to mock data on error
+        setTickerData(mockTickerData);
       } finally {
         setLoading(false);
       }
@@ -69,6 +92,11 @@ const StockTicker = () => {
         Loading market data...
       </div>
     );
+  }
+  
+  // If still no data after loading, show mock data
+  if (tickerData.length === 0) {
+    setTickerData(mockTickerData);
   }
   
   return (

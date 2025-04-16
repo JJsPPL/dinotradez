@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 import API_CONFIG from '@/config/api';
 
@@ -28,9 +29,10 @@ export const formatNumber = (num: number): string => {
 // Fetch real stock data from Alpha Vantage
 export async function getAlphaVantageStockData(symbol: string): Promise<StockQuote | null> {
   try {
+    console.log(`Fetching Alpha Vantage data for ${symbol}...`);
     // Global Quote endpoint for current price data
     const quoteUrl = `${API_CONFIG.alphaVantage.baseUrl}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_CONFIG.alphaVantage.apiKey}`;
-    const quoteResponse = await axios.get(quoteUrl);
+    const quoteResponse = await axios.get(quoteUrl, { timeout: 5000 });
     const quoteData = quoteResponse.data['Global Quote'];
     
     if (!quoteData || !quoteData['01. symbol']) {
@@ -40,7 +42,7 @@ export async function getAlphaVantageStockData(symbol: string): Promise<StockQuo
     
     // Overview endpoint for company information
     const overviewUrl = `${API_CONFIG.alphaVantage.baseUrl}?function=OVERVIEW&symbol=${symbol}&apikey=${API_CONFIG.alphaVantage.apiKey}`;
-    const overviewResponse = await axios.get(overviewUrl);
+    const overviewResponse = await axios.get(overviewUrl, { timeout: 5000 });
     const overviewData = overviewResponse.data;
     
     const price = parseFloat(quoteData['05. price']);
@@ -122,8 +124,9 @@ export async function getStockDataRapidAPI(symbol: string): Promise<StockQuote |
 // Public Yahoo Finance API without needing an API key (may have limitations)
 export async function getStockDataPublic(symbol: string): Promise<StockQuote | null> {
   try {
+    console.log(`Fetching public Yahoo Finance data for ${symbol}...`);
     // Using Yahoo Finance query1 endpoint
-    const response = await axios.get(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}`);
+    const response = await axios.get(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}`, { timeout: 5000 });
     const result = response.data.chart.result[0];
     
     if (!result) {
@@ -159,8 +162,9 @@ export async function getStockDataPublic(symbol: string): Promise<StockQuote | n
   }
 }
 
-// Mock data as fallback
+// Enhanced mock data as fallback - always returns data
 export function getMockStockData(symbol: string): StockQuote {
+  console.log(`Generating mock data for ${symbol}...`);
   // Calculate some random values based on the symbol string to simulate unique data
   const seed = symbol.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const rand = (min: number, max: number) => min + ((seed % 100) / 100) * (max - min);
@@ -188,20 +192,37 @@ export function getMockStockData(symbol: string): StockQuote {
 
 // Main function to get stock data with fallback options
 export async function fetchStockData(symbol: string): Promise<StockQuote> {
+  console.log(`Fetching stock data for ${symbol}...`);
   try {
-    // Try Alpha Vantage first
-    const alphaVantageData = await getAlphaVantageStockData(symbol);
-    if (alphaVantageData) return alphaVantageData;
+    // Try Alpha Vantage first with a timeout
+    const alphaVantagePromise = getAlphaVantageStockData(symbol);
+    const alphaVantageData = await Promise.race([
+      alphaVantagePromise,
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), 3000)) // 3s timeout
+    ]);
     
-    // If Alpha Vantage fails, try the public API 
-    const publicData = await getStockDataPublic(symbol);
-    if (publicData) return publicData;
+    if (alphaVantageData) {
+      console.log(`Successfully fetched Alpha Vantage data for ${symbol}`);
+      return alphaVantageData;
+    }
+    
+    // If Alpha Vantage fails, try the public API with a timeout
+    const publicApiPromise = getStockDataPublic(symbol);
+    const publicData = await Promise.race([
+      publicApiPromise,
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), 3000)) // 3s timeout
+    ]);
+    
+    if (publicData) {
+      console.log(`Successfully fetched public API data for ${symbol}`);
+      return publicData;
+    }
     
     // If all APIs fail, use mock data
-    console.warn(`Using mock data for ${symbol}`);
+    console.warn(`All API attempts failed for ${symbol}, using mock data`);
     return getMockStockData(symbol);
   } catch (error) {
-    console.error('All stock data fetch methods failed:', error);
+    console.error(`Error in fetchStockData for ${symbol}:`, error);
     return getMockStockData(symbol);
   }
 }

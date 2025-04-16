@@ -1,16 +1,19 @@
 
-// Alpha Vantage API configuration
+// API Configuration for DinoTradez
 const API_CONFIG = {
   alphaVantage: {
-    apiKey: 'PACE4ZNKMN2DAKEZ', // Demo key - Replace with your actual API key
-    baseUrl: 'https://www.alphavantage.co/query'
+    apiKey: '7DCHKM0CLGZ5LAAJ', // Demo key - Rate limited but works for demo
+    baseUrl: 'https://www.alphavantage.co/query',
+    timeout: 5000 // 5 seconds timeout to prevent hanging requests
   },
   additionalData: {
     // These are mock endpoints for data not available in the free API
     shortInterest: 'https://api.dinotradez.com/v1/short-interest',
     darkPool: 'https://api.dinotradez.com/v1/dark-pool',
     blockTrades: 'https://api.dinotradez.com/v1/block-trades'
-  }
+  },
+  fallbackToMock: true, // Always fall back to mock data if API fails
+  mockDataEnabled: true  // Enable mock data generation
 };
 
 export default API_CONFIG;
