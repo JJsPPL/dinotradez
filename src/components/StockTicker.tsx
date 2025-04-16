@@ -93,6 +93,7 @@ const StockTicker = () => {
             </div>
           ))}
           
+          {/* Repeat for continuous scrolling */}
           {tickerData.map((item) => (
             <div key={`repeat-${item.symbol}`} className="ticker-item">
               {item.type === 'crypto' && <Bitcoin className="h-3 w-3 inline mr-1 text-orange-400" />}
