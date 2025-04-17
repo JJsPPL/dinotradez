@@ -7,35 +7,35 @@
 
 :root {
   /* Dark theme */
-  --background: 0 0% 0%;
-  --foreground: 210 40% 98%;
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
   
-  --card: 0 0% 10%;
-  --card-foreground: 210 40% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
   
-  --popover: 0 0% 10%;
-  --popover-foreground: 210 40% 98%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
   
-  --primary: 201 96% 32%;
-  --primary-foreground: 210 40% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 240 5.9% 10%;
   
-  --secondary: 215 25% 27%;
-  --secondary-foreground: 210 40% 98%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
   
-  --muted: 215 25% 27%;
-  --muted-foreground: 217.9 10.6% 64.9%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
   
-  --accent: 215 25% 27%;
-  --accent-foreground: 210 40% 98%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
   
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
 
-  --border: 215 28% 17%;
-  --input: 215 28% 17%;
-  --ring: 216.2 28.6% 67.5%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 240 4.9% 83.9%;
   
-  --radius: 0.5rem;
+  --radius: 0.75rem;
 }
 
 /* Global styles */
@@ -55,11 +55,11 @@
   
   #root {
     min-height: 100vh;
-    background-color: #000000;
+    background-color: hsl(var(--background));
   }
 }
 
-/* Animation classes for fade and other effects */
+/* Utilities for dark mode and glassmorphism */
 @layer utilities {
   .bg-gradient-hero {
     @apply bg-gradient-to-br from-black to-gray-900;
@@ -76,26 +76,4 @@
   .card-hover {
     @apply transition-all duration-300 hover:shadow-md hover:-translate-y-1;
   }
-  
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-}
-
-/* Text color adjustments for better visibility */
-.text-white {
-  color: #ffffff;
-}
-
-.text-gray-300 {
-  color: #d1d5db;
-}
-
-.text-gray-400 {
-  color: #9ca3af;
 }
