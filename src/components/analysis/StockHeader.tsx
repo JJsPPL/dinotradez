@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Info, RefreshCw } from 'lucide-react';
-import { fetchStockData, StockQuote } from '@/utils/stockDataService';
-import { cn } from '@/lib/utils';
-import { toast } from 'sonner';
 
-// Default mock data to show immediately
-const defaultStockData: StockQuote = {
+import React from 'react';
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Info } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+// Default stock data to display
+const stockData = {
   symbol: 'AAPL',
   name: 'Apple Inc.',
   price: 175.42,
@@ -19,46 +18,6 @@ const defaultStockData: StockQuote = {
 };
 
 const StockHeader = () => {
-  const [stockData, setStockData] = useState<StockQuote>(defaultStockData);
-  const [loading, setLoading] = useState(false);
-  const symbol = 'AAPL'; // Default symbol
-
-  useEffect(() => {
-    // Start with mock data immediately
-    setStockData(defaultStockData);
-    
-    // Try to get real data
-    loadStockData();
-    
-    // Set up auto-refresh every 5 minutes
-    const refreshInterval = setInterval(() => {
-      console.log("Auto-refreshing stock data...");
-      loadStockData();
-    }, 300000); // 5 minutes
-    
-    return () => clearInterval(refreshInterval);
-  }, []);
-
-  const loadStockData = async () => {
-    setLoading(true);
-    try {
-      const data = await fetchStockData(symbol);
-      if (data && data.symbol) {
-        setStockData(data);
-        console.log("Stock data loaded:", data);
-      } else {
-        console.log("Using default data - API returned no data");
-        // Keep using the default data that's already set
-      }
-    } catch (error) {
-      console.error('Error loading stock data:', error);
-      // Keep using the default data that's already set
-      toast.error("Could not load latest stock data");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="flex items-center">
       <Tooltip>
@@ -93,17 +52,6 @@ const StockHeader = () => {
         ${stockData.price?.toFixed(2)} {(stockData.percentChange || 0) >= 0 ? "+" : ""}
         {stockData.percentChange?.toFixed(2)}%
       </div>
-      {loading ? (
-        <RefreshCw className="ml-2 h-3 w-3 animate-spin text-gray-400" />
-      ) : (
-        <button 
-          onClick={loadStockData} 
-          className="ml-2 text-gray-400 hover:text-white"
-          title="Refresh stock data"
-        >
-          <RefreshCw className="h-3 w-3" />
-        </button>
-      )}
     </div>
   );
 };

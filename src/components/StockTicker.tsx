@@ -27,68 +27,8 @@ const mockTickerData: TickerItem[] = [
 
 const StockTicker = () => {
   const [tickerData, setTickerData] = useState<TickerItem[]>(mockTickerData);
-  const [loading, setLoading] = useState(false);
   
-  const popularSymbols = [
-    'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA', 'JPM', 'V', 'WMT',
-    'BTC', 'GLD', 'TNX' // Bitcoin, Gold, 10-year Treasury
-  ];
-  
-  useEffect(() => {
-    // Start with mock data immediately
-    setTickerData(mockTickerData);
-    
-    const loadTickerData = async () => {
-      setLoading(true);
-      try {
-        console.log('Fetching stock data...');
-        const promises = popularSymbols.map(symbol => fetchStockData(symbol));
-        const results = await Promise.allSettled(promises);
-        
-        const successfulResults = results
-          .filter((result): result is PromiseFulfilledResult<any> => result.status === 'fulfilled')
-          .map(result => result.value)
-          .filter(data => data && data.symbol);
-        
-        const enhancedResults = successfulResults.map(item => {
-          let type: 'stock' | 'crypto' | 'commodity' | 'bond' = 'stock';
-          
-          if (item.symbol === 'BTC') {
-            type = 'crypto';
-          } else if (item.symbol === 'GLD') {
-            type = 'commodity';
-          } else if (item.symbol === 'TNX') {
-            type = 'bond';
-          }
-          
-          return { ...item, type };
-        });
-        
-        if (enhancedResults.length > 0) {
-          console.log('Successfully loaded ticker data:', enhancedResults);
-          setTickerData(enhancedResults as TickerItem[]);
-        } else {
-          console.warn('No successful API results, keeping mock data');
-          // Mock data already set initially
-        }
-      } catch (error) {
-        console.error('Failed to load ticker data:', error);
-        // Mock data already set initially
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    // Try to load real data after component mounts
-    loadTickerData();
-    
-    const interval = setInterval(() => {
-      loadTickerData();
-    }, 300000);
-    
-    return () => clearInterval(interval);
-  }, []);
-  
+  // Use mock data directly without fetching - this ensures data always shows
   return (
     <div className="bg-black/50 py-1 overflow-hidden">
       <div className="ticker-wrap">
@@ -98,8 +38,8 @@ const StockTicker = () => {
               {item.type === 'crypto' && <Bitcoin className="h-3 w-3 inline mr-1 text-orange-400" />}
               {item.type === 'commodity' && <TrendingDown className="h-3 w-3 inline mr-1 text-yellow-400" />}
               {item.type === 'bond' && <TrendingUp className="h-3 w-3 inline mr-1 text-blue-400" />}
-              <span className="font-medium mr-2">{item.symbol}</span>
-              <span>${item.price.toFixed(2)}</span>
+              <span className="font-medium mr-2 text-white">{item.symbol}</span>
+              <span className="text-white">${item.price.toFixed(2)}</span>
               <span className={item.change >= 0 ? 'text-green-400 ml-1' : 'text-red-400 ml-1'}>
                 {item.change >= 0 ? (
                   <ArrowUp className="h-3 w-3 inline mr-1" />
@@ -117,8 +57,8 @@ const StockTicker = () => {
               {item.type === 'crypto' && <Bitcoin className="h-3 w-3 inline mr-1 text-orange-400" />}
               {item.type === 'commodity' && <TrendingDown className="h-3 w-3 inline mr-1 text-yellow-400" />}
               {item.type === 'bond' && <TrendingUp className="h-3 w-3 inline mr-1 text-blue-400" />}
-              <span className="font-medium mr-2">{item.symbol}</span>
-              <span>${item.price.toFixed(2)}</span>
+              <span className="font-medium mr-2 text-white">{item.symbol}</span>
+              <span className="text-white">${item.price.toFixed(2)}</span>
               <span className={item.change >= 0 ? 'text-green-400 ml-1' : 'text-red-400 ml-1'}>
                 {item.change >= 0 ? (
                   <ArrowUp className="h-3 w-3 inline mr-1" />

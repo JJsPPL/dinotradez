@@ -12,8 +12,6 @@
   color: #ffffff;
 }
 
-/* Advertisement styles are now handled by the component */
-
 /* Debug information */
 .debug-info {
   position: fixed;
@@ -35,7 +33,7 @@
   }
 }
 
-/* Ensure consistent text styling for improved visibility */
+/* Ensure consistent text styling for improved visibility in dark mode */
 h1, h2, h3, h4, h5, h6 {
   color: #ffffff;
   font-weight: 600;
@@ -47,11 +45,11 @@ p {
 
 /* Stock positive/negative indicators */
 .stock-positive {
-  color: #22c55e;
+  color: #22c55e !important;
 }
 
 .stock-negative {
-  color: #ef4444;
+  color: #ef4444 !important;
 }
 
 /* Price change animation */

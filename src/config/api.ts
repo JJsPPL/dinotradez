@@ -14,7 +14,7 @@ const API_CONFIG = {
   },
   fallbackToMock: true,   // Always fall back to mock data if API fails
   mockDataEnabled: true,  // Always enable mock data generation for consistent demo experience
-  useRealApi: true        // Try real API first, with fallback to mock data
+  useRealApi: false       // Skip real API calls entirely and use mock data directly
 };
 
 export default API_CONFIG;
