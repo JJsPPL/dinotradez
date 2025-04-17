@@ -12,9 +12,9 @@ const API_CONFIG = {
     darkPool: 'https://api.dinotradez.com/v1/dark-pool',
     blockTrades: 'https://api.dinotradez.com/v1/block-trades'
   },
-  fallbackToMock: true, // Always fall back to mock data if API fails
-  mockDataEnabled: true, // Always enable mock data generation for consistent demo experience
-  useRealApi: false     // Set to false to bypass real API calls entirely and use mock data
+  fallbackToMock: true,   // Always fall back to mock data if API fails
+  mockDataEnabled: true,  // Always enable mock data generation for consistent demo experience
+  useRealApi: true        // Try real API first, with fallback to mock data
 };
 
 export default API_CONFIG;

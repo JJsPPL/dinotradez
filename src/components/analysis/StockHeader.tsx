@@ -53,6 +53,7 @@ const StockHeader = () => {
     } catch (error) {
       console.error('Error loading stock data:', error);
       // Keep using the default data that's already set
+      toast.error("Could not load latest stock data");
     } finally {
       setLoading(false);
     }
