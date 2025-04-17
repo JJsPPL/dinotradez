@@ -26,8 +26,8 @@ const mockTickerData: TickerItem[] = [
 ];
 
 const StockTicker = () => {
-  const [tickerData, setTickerData] = useState<TickerItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [tickerData, setTickerData] = useState<TickerItem[]>(mockTickerData);
+  const [loading, setLoading] = useState(false);
   
   const popularSymbols = [
     'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'TSLA', 'JPM', 'V', 'WMT',
@@ -35,6 +35,9 @@ const StockTicker = () => {
   ];
   
   useEffect(() => {
+    // Start with mock data immediately
+    setTickerData(mockTickerData);
+    
     const loadTickerData = async () => {
       setLoading(true);
       try {
@@ -65,18 +68,18 @@ const StockTicker = () => {
           console.log('Successfully loaded ticker data:', enhancedResults);
           setTickerData(enhancedResults as TickerItem[]);
         } else {
-          console.warn('No successful API results, falling back to mock data');
-          setTickerData(mockTickerData);
+          console.warn('No successful API results, keeping mock data');
+          // Mock data already set initially
         }
       } catch (error) {
         console.error('Failed to load ticker data:', error);
-        // Fall back to mock data on error
-        setTickerData(mockTickerData);
+        // Mock data already set initially
       } finally {
         setLoading(false);
       }
     };
     
+    // Try to load real data after component mounts
     loadTickerData();
     
     const interval = setInterval(() => {
@@ -85,19 +88,6 @@ const StockTicker = () => {
     
     return () => clearInterval(interval);
   }, []);
-  
-  if (loading && tickerData.length === 0) {
-    return (
-      <div className="bg-black/50 py-1 text-center text-sm text-gray-400">
-        Loading market data...
-      </div>
-    );
-  }
-  
-  // If still no data after loading, show mock data
-  if (tickerData.length === 0) {
-    setTickerData(mockTickerData);
-  }
   
   return (
     <div className="bg-black/50 py-1 overflow-hidden">

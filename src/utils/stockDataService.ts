@@ -28,11 +28,16 @@ export const formatNumber = (num: number): string => {
 
 // Fetch real stock data from Alpha Vantage
 export async function getAlphaVantageStockData(symbol: string): Promise<StockQuote | null> {
+  if (!API_CONFIG.useRealApi) {
+    console.log(`Skipping Alpha Vantage API call for ${symbol} - using mock data instead`);
+    return null;
+  }
+  
   try {
     console.log(`Fetching Alpha Vantage data for ${symbol}...`);
     // Global Quote endpoint for current price data
     const quoteUrl = `${API_CONFIG.alphaVantage.baseUrl}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_CONFIG.alphaVantage.apiKey}`;
-    const quoteResponse = await axios.get(quoteUrl, { timeout: 5000 });
+    const quoteResponse = await axios.get(quoteUrl, { timeout: API_CONFIG.alphaVantage.timeout });
     const quoteData = quoteResponse.data['Global Quote'];
     
     if (!quoteData || !quoteData['01. symbol']) {
@@ -42,7 +47,7 @@ export async function getAlphaVantageStockData(symbol: string): Promise<StockQuo
     
     // Overview endpoint for company information
     const overviewUrl = `${API_CONFIG.alphaVantage.baseUrl}?function=OVERVIEW&symbol=${symbol}&apikey=${API_CONFIG.alphaVantage.apiKey}`;
-    const overviewResponse = await axios.get(overviewUrl, { timeout: 5000 });
+    const overviewResponse = await axios.get(overviewUrl, { timeout: API_CONFIG.alphaVantage.timeout });
     const overviewData = overviewResponse.data;
     
     const price = parseFloat(quoteData['05. price']);
@@ -83,6 +88,10 @@ export async function getAlphaVantageStockData(symbol: string): Promise<StockQuo
 
 // Alternative method using Yahoo Finance API (through RapidAPI)
 export async function getStockDataRapidAPI(symbol: string): Promise<StockQuote | null> {
+  if (!API_CONFIG.useRealApi) {
+    return null;
+  }
+  
   const options = {
     method: 'GET',
     url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v2/get-summary',
@@ -123,6 +132,10 @@ export async function getStockDataRapidAPI(symbol: string): Promise<StockQuote |
 
 // Public Yahoo Finance API without needing an API key (may have limitations)
 export async function getStockDataPublic(symbol: string): Promise<StockQuote | null> {
+  if (!API_CONFIG.useRealApi) {
+    return null;
+  }
+  
   try {
     console.log(`Fetching public Yahoo Finance data for ${symbol}...`);
     // Using Yahoo Finance query1 endpoint
@@ -169,14 +182,52 @@ export function getMockStockData(symbol: string): StockQuote {
   const seed = symbol.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const rand = (min: number, max: number) => min + ((seed % 100) / 100) * (max - min);
   
-  const price = rand(50, 500);
+  // Base prices for common stocks
+  const basePrices: Record<string, number> = {
+    'AAPL': 175.42,
+    'MSFT': 310.87,
+    'GOOGL': 142.76,
+    'AMZN': 129.83,
+    'NVDA': 681.22,
+    'META': 324.62,
+    'TSLA': 273.58,
+    'BTC': 42871.35,
+    'GLD': 183.27,
+    'TNX': 4.328,
+    'SPY': 450.32,
+    'QQQ': 380.45,
+    'DIA': 350.67,
+    'IWM': 197.23,
+    'VIX': 15.72,
+  };
+  
+  // Use predefined price if available, otherwise generate one
+  const price = basePrices[symbol] || rand(50, 500);
   const change = rand(-20, 20);
   const percentChange = (change / price) * 100;
   const volume = Math.floor(rand(1000000, 50000000));
   
+  const names: Record<string, string> = {
+    'AAPL': 'Apple Inc.',
+    'MSFT': 'Microsoft Corporation',
+    'GOOGL': 'Alphabet Inc.',
+    'AMZN': 'Amazon.com Inc.',
+    'NVDA': 'NVIDIA Corporation',
+    'META': 'Meta Platforms Inc.',
+    'TSLA': 'Tesla Inc.',
+    'BTC': 'Bitcoin USD',
+    'GLD': 'SPDR Gold Shares',
+    'TNX': '10-Year Treasury Yield',
+    'SPY': 'S&P 500 ETF',
+    'QQQ': 'NASDAQ 100 ETF',
+    'DIA': 'Dow Jones ETF',
+    'IWM': 'Russell 2000 ETF',
+    'VIX': 'CBOE Volatility Index',
+  };
+  
   return {
     symbol: symbol.toUpperCase(),
-    name: `${symbol.toUpperCase()} Inc.`,
+    name: names[symbol] || `${symbol.toUpperCase()} Inc.`,
     price: parseFloat(price.toFixed(2)),
     change: parseFloat(change.toFixed(2)),
     percentChange: parseFloat(percentChange.toFixed(2)),
@@ -193,6 +244,12 @@ export function getMockStockData(symbol: string): StockQuote {
 // Main function to get stock data with fallback options
 export async function fetchStockData(symbol: string): Promise<StockQuote> {
   console.log(`Fetching stock data for ${symbol}...`);
+  
+  // Return mock data immediately if configured to skip API calls
+  if (!API_CONFIG.useRealApi) {
+    return getMockStockData(symbol);
+  }
+  
   try {
     // Try Alpha Vantage first with a timeout
     const alphaVantagePromise = getAlphaVantageStockData(symbol);

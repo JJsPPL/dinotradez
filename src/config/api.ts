@@ -13,7 +13,8 @@ const API_CONFIG = {
     blockTrades: 'https://api.dinotradez.com/v1/block-trades'
   },
   fallbackToMock: true, // Always fall back to mock data if API fails
-  mockDataEnabled: true  // Enable mock data generation
+  mockDataEnabled: true, // Always enable mock data generation for consistent demo experience
+  useRealApi: false     // Set to false to bypass real API calls entirely and use mock data
 };
 
 export default API_CONFIG;
