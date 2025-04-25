@@ -131,8 +131,6 @@ function initializeSmoothScrolling() {
 }
 
 // Initialize Stock Search Functionality
-import { fetchStockData } from './fetchStockData.js';
-
 function initializeSearchFunctionality() {
     const searchInput = document.querySelector('.search-input');
     const searchButton = document.querySelector('.search-button');
@@ -189,7 +187,8 @@ function initializeSearchFunctionality() {
         showMessage(`Fetching data for ${ticker}...`, 'info');
         let stockData;
         try {
-            stockData = await fetchStockData(ticker);
+            // Use from window
+            stockData = await window.fetchStockData(ticker);
             console.log("Raw API response for", ticker, ":", stockData); // DEBUG
         } catch (e) {
             console.error("API call failed for ticker", ticker, e); // DEBUG

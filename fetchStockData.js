@@ -4,7 +4,7 @@
  * @param {string} ticker - The stock ticker (e.g., 'AAPL')
  * @returns {Promise<Object>} - Stock data object or null if not found
  */
-export async function fetchStockData(ticker) {
+async function fetchStockData(ticker) {
     const url = `https://yahoo-finance15.p.rapidapi.com/api/v1/markets/quote?ticker=${ticker}&type=STOCKS`;
     const options = {
         method: 'GET',
@@ -25,3 +25,6 @@ export async function fetchStockData(ticker) {
     }
     return null;
 }
+
+// Make it globally available for other scripts (if not using import/export)
+window.fetchStockData = fetchStockData;
