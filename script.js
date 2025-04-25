@@ -135,9 +135,100 @@ function initializeSearchFunctionality() {
     const searchInput = document.querySelector('.search-input');
     const searchButton = document.querySelector('.search-button');
     const stockTable = document.querySelector('.stock-watchlist .data-table tbody');
-    
+
     if (!searchInput || !searchButton || !stockTable) return;
-    
+
+    // Sample stock data for demonstration
+    const availableStocks = {
+        // ... keep existing availableStocks object the same ...
+    };
+
+    // Add stock to the watchlist (with live API support if available)
+    async function addStockToWatchlist(ticker) {
+        ticker = ticker.toUpperCase();
+
+        // Check if stock already exists in the table
+        const existingRows = stockTable.querySelectorAll('tr');
+        for (let row of existingRows) {
+            if (row.querySelector('td').textContent === ticker) {
+                showMessage(`${ticker} is already in your watchlist`, 'info');
+                return;
+            }
+        }
+
+        let stockData = null;
+        // Try to use live fetchStockData if available (window.fetchStockData is attached by fetchStockData.js)
+        if (typeof window.fetchStockData === 'function') {
+            showMessage(`Fetching data for ${ticker}...`, 'info');
+            try {
+                stockData = await window.fetchStockData(ticker);
+            } catch (err) {
+                showMessage(`API error: ${err}`, 'error');
+            }
+        }
+        // Fallback: use local demo data if API isn't available or fails
+        if (!stockData) {
+            stockData = availableStocks[ticker];
+        }
+        // Still not found: show error
+        if (!stockData) {
+            showMessage(`Stock ${ticker} not found`, 'error');
+            return;
+        }
+
+        // Determine if positive or negative
+        const isPositive = (stockData.change ?? stockData.netChange ?? 0) >= 0;
+        const price = stockData.price ?? stockData.last ?? 0;
+        const netChange = stockData.change ?? stockData.netChange ?? 0;
+        const percentChange = stockData.percentChange ?? stockData.changesPercentage ?? 0;
+        const shares = stockData.shares ?? stockData.sharesOutstanding ?? '-';
+        const auth = stockData.auth ?? '-';
+        const marketCap = stockData.marketCap ?? '-';
+        const mcRatio = stockData.mcRatio ?? '-';
+        const volume = stockData.volume ?? '-';
+        const avgVol = stockData.avgVol ?? '-';
+        const relVol = stockData.relVol ?? '-';
+        const dp = stockData.dp ?? '-';
+
+        // Create row
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="symbol-col">${ticker}</td>
+            <td>${Number(price).toFixed(2)}</td>
+            <td class="${isPositive ? 'positive' : 'negative'}">${isPositive ? '+' : ''}${Number(netChange).toFixed(2)}</td>
+            <td class="${isPositive ? 'positive' : 'negative'}">${isPositive ? '+' : ''}${Number(percentChange).toFixed(2)}%</td>
+            <td>${shares}</td>
+            <td>${auth}</td>
+            <td>${marketCap}</td>
+            <td>${mcRatio}</td>
+            <td>${volume}</td>
+            <td>${avgVol}</td>
+            <td>${relVol}</td>
+            <td>${dp}</td>
+        `;
+
+        // Add right-click to remove
+        row.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            if (confirm(`Remove ${ticker} from watchlist?`)) {
+                row.classList.add('removing');
+                setTimeout(() => {
+                    row.remove();
+                    showMessage(`${ticker} removed from watchlist`, 'success');
+                }, 300);
+            }
+        });
+
+        // Add to table with animation
+        row.style.opacity = '0';
+        stockTable.appendChild(row);
+        setTimeout(() => {
+            row.style.opacity = '1';
+        }, 50);
+
+        showMessage(`${ticker} added to watchlist`, 'success');
+    }
+
     // Helper function to show messages
     function showMessage(message, type = 'info') {
         const messageEl = document.createElement('div');
@@ -167,97 +258,6 @@ function initializeSearchFunctionality() {
                 messageEl.remove();
             }, 300);
         }, 3000);
-    }
-
-    // Add stock to the watchlist (now fetches from API)
-    async function addStockToWatchlist(ticker) {
-        ticker = ticker.toUpperCase();
-        console.log("Searching for ticker:", ticker); // DEBUG
-
-        // Check if stock already exists in the table
-        const existingRows = stockTable.querySelectorAll('tr');
-        for (let row of existingRows) {
-            if (row.querySelector('td').textContent === ticker) {
-                showMessage(`${ticker} is already in your watchlist`, 'info');
-                return;
-            }
-        }
-
-        // Fetch live stock data
-        showMessage(`Fetching data for ${ticker}...`, 'info');
-        let stockData;
-        try {
-            // Use from window
-            stockData = await window.fetchStockData(ticker);
-            console.log("Raw API response for", ticker, ":", stockData); // DEBUG
-        } catch (e) {
-            console.error("API call failed for ticker", ticker, e); // DEBUG
-            showMessage(`API failed for ${ticker}: ${e}`, 'error');
-            return;
-        }
-        if (!stockData) {
-            console.warn("No stock data returned for", ticker); // DEBUG
-            showMessage(`Stock ${ticker} not found`, 'error');
-            return;
-        }
-        // Some fields might not be available, check for their presence!
-        const isPositive = stockData.change >= 0;
-        const price = stockData.price || stockData.ask || 0;
-        const netChange = stockData.change || 0;
-        const percentChange = stockData.changesPercentage || 0;
-        const shares = stockData.sharesOutstanding || '-';
-        const auth = '-';
-        const marketCap = stockData.marketCap || '-';
-        const mcRatio = '-';
-        const volume = stockData.volume || '-';
-        const avgVol = stockData.avgVolume || '-';
-        const relVol = '-';
-        const dp = '-';
-        // Dummy values for Short Ratio - you should plug in real API data here if available
-        const shortRatio = stockData.shortRatio || (Math.random() * 4 + 0.5).toFixed(2);
-        const prevShortRatio = stockData.prevShortRatio || (shortRatio * (1 + (Math.random() - 0.5) * 0.1)).toFixed(2);
-        const percShortChange = prevShortRatio !== 0 ? (((shortRatio - prevShortRatio) / prevShortRatio) * 100).toFixed(1) : "0.0";
-        const shortRatioClass = percShortChange >= 0 ? 'positive' : 'negative';
-
-        // Create row
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td class="symbol-col">${ticker}</td>
-            <td>${Number(price).toFixed(2)}</td>
-            <td class="${isPositive ? 'positive' : 'negative'}">${isPositive ? '+' : ''}${Number(netChange).toFixed(2)}</td>
-            <td class="${isPositive ? 'positive' : 'negative'}">${isPositive ? '+' : ''}${Number(percentChange).toFixed(2)}%</td>
-            <td>${shares}</td>
-            <td>${auth}</td>
-            <td>${marketCap}</td>
-            <td>${mcRatio}</td>
-            <td>${volume}</td>
-            <td>${avgVol}</td>
-            <td>${relVol}</td>
-            <td>${dp}</td>
-            <td>${shortRatio}</td>
-            <td class="${shortRatioClass}">${percShortChange > 0 ? '+' : ''}${percShortChange}%</td>
-        `;
-
-        // Add right-click to remove
-        row.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            if (confirm(`Remove ${ticker} from watchlist?`)) {
-                row.classList.add('removing');
-                setTimeout(() => {
-                    row.remove();
-                    showMessage(`${ticker} removed from watchlist`, 'success');
-                }, 300);
-            }
-        });
-
-        // Add to table with animation
-        row.style.opacity = '0';
-        stockTable.appendChild(row);
-        setTimeout(() => {
-            row.style.opacity = '1';
-        }, 50);
-
-        showMessage(`${ticker} added to watchlist`, 'success');
     }
 
     // Event listeners
