@@ -5,6 +5,7 @@
  * @returns {Promise<Object>} - Stock data object or null if not found
  */
 async function fetchStockData(ticker) {
+    console.log("Calling fetchStockData for", ticker);
     const url = `https://yahoo-finance15.p.rapidapi.com/api/v1/markets/quote?ticker=${ticker}&type=STOCKS`;
     const options = {
         method: 'GET',
@@ -18,6 +19,7 @@ async function fetchStockData(ticker) {
         const response = await fetch(url, options);
         const data = await response.json();
         if (data && data.body && data.body.length > 0) {
+            console.log("Fetched data from API:", data.body[0]);
             return data.body[0];
         }
     } catch (error) {
@@ -28,3 +30,4 @@ async function fetchStockData(ticker) {
 
 // Make it globally available for other scripts (if not using import/export)
 window.fetchStockData = fetchStockData;
+console.log("fetchStockData.js loaded, window.fetchStockData available");

@@ -146,6 +146,8 @@ function initializeSearchFunctionality() {
     // Add stock to the watchlist (with live API support if available)
     async function addStockToWatchlist(ticker) {
         ticker = ticker.toUpperCase();
+        console.log("AddStockToWatchlist called for", ticker);
+        console.log("typeof window.fetchStockData", typeof window.fetchStockData);
 
         // Check if stock already exists in the table
         const existingRows = stockTable.querySelectorAll('tr');
@@ -165,6 +167,8 @@ function initializeSearchFunctionality() {
             } catch (err) {
                 showMessage(`API error: ${err}`, 'error');
             }
+        } else {
+            console.warn("window.fetchStockData is not a function, falling back to local data");
         }
         // Fallback: use local demo data if API isn't available or fails
         if (!stockData) {
