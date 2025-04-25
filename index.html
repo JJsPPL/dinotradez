@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +18,7 @@
     <nav class="navbar">
         <div class="container">
             <div class="navbar-brand">
-                <img src="phoenix-logo.png" alt="Phoenix Logo" class="logo">
+                <!-- <img src="phoenix-logo.png" alt="Phoenix Logo" class="logo"> -->
                 <h1>DinoTradez</h1>
             </div>
             <div class="navbar-menu">
@@ -40,7 +41,7 @@
         <div class="container">
             <a href="https://jjsppl.github.io/dinotradez/" target="_blank" class="ad-link">
                 <div class="ad-content">
-                    <img src="phoenix-logo.png" alt="DinoTradez" class="ad-logo">
+                    <!-- <img src="phoenix-logo.png" alt="DinoTradez" class="ad-logo"> -->
                     <div class="ad-text">
                         <h3>DinoTradez</h3>
                         <p>Stock Market Analysis</p>
@@ -107,6 +108,39 @@
                         <i class="fas fa-chart-line"></i>
                     </div>
                 </div>
+                <!-- Bitcoin -->
+                <div class="market-card">
+                    <div class="market-info">
+                        <h3>Bitcoin</h3>
+                        <p class="market-value" id="btc-value">66,000.00</p>
+                    </div>
+                    <div class="market-change positive" id="btc-change">
+                        <p>+2500 (3.9%)</p>
+                        <i class="fas fa-bitcoin"></i>
+                    </div>
+                </div>
+                <!-- Gold -->
+                <div class="market-card">
+                    <div class="market-info">
+                        <h3>Gold</h3>
+                        <p class="market-value" id="gold-value">2,350.00</p>
+                    </div>
+                    <div class="market-change positive" id="gold-change">
+                        <p>+15 (0.6%)</p>
+                        <i class="fas fa-coins"></i>
+                    </div>
+                </div>
+                <!-- 10Y Treasury Yield -->
+                <div class="market-card">
+                    <div class="market-info">
+                        <h3>10Y Treasury</h3>
+                        <p class="market-value" id="yield-value">4.62</p>
+                    </div>
+                    <div class="market-change positive" id="yield-change">
+                        <p>+0.04 (0.87%)</p>
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -154,9 +188,12 @@
                                 <th>Avg Vol</th>
                                 <th>Rel Vol</th>
                                 <th>DP %</th>
+                                <th>Short Ratio</th>
+                                <th>% Short Ratio Chg</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- Update all rows below to add new columns at end -->
                             <tr>
                                 <td class="symbol-col">AAPL</td>
                                 <td>175.42</td>
@@ -170,6 +207,8 @@
                                 <td>61.54M</td>
                                 <td>0.91</td>
                                 <td>42.8%</td>
+                                <td>2.1</td>
+                                <td class="positive">+4.5%</td>
                             </tr>
                             <tr>
                                 <td class="symbol-col">NVDA</td>
@@ -184,6 +223,8 @@
                                 <td>47.89M</td>
                                 <td>0.91</td>
                                 <td>46.2%</td>
+                                <td>1.4</td>
+                                <td class="positive">+3.2%</td>
                             </tr>
                             <tr>
                                 <td class="symbol-col">TSLA</td>
@@ -198,6 +239,8 @@
                                 <td>97.12M</td>
                                 <td>1.22</td>
                                 <td>48.7%</td>
+                                <td>3.8</td>
+                                <td class="negative">-2.3%</td>
                             </tr>
                             <tr>
                                 <td class="symbol-col">MSFT</td>
@@ -212,6 +255,8 @@
                                 <td>26.18M</td>
                                 <td>0.91</td>
                                 <td>38.5%</td>
+                                <td>1.7</td>
+                                <td class="positive">+2.9%</td>
                             </tr>
                             <tr>
                                 <td class="symbol-col">AMZN</td>
@@ -226,6 +271,8 @@
                                 <td>51.33M</td>
                                 <td>0.93</td>
                                 <td>45.1%</td>
+                                <td>2.5</td>
+                                <td class="positive">+0.8%</td>
                             </tr>
                             <tr>
                                 <td class="symbol-col">META</td>
@@ -240,6 +287,8 @@
                                 <td>16.23M</td>
                                 <td>0.90</td>
                                 <td>39.8%</td>
+                                <td>1.3</td>
+                                <td class="positive">+1.1%</td>
                             </tr>
                         </tbody>
                     </table>
@@ -247,7 +296,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Market Intelligence Section -->
     <section class="market-intelligence">
         <div class="container">
@@ -451,7 +500,7 @@
     <!-- Lotto Picks Section -->
     <section class="data-section highlight-section" id="lottopicks">
         <div class="container">
-            <h2 class="section-title">Lotto Stock Picks</h2>
+            <h2 class="section-title">Lotto Plays</h2>
             <p class="section-subtitle">Stocks with >1M volume and -90% to -99% change</p>
             <div class="table-wrapper">
                 <table class="data-table">
@@ -469,6 +518,8 @@
                             <th>Avg Vol</th>
                             <th>Rel Vol</th>
                             <th>DP %</th>
+                            <th>Short Ratio</th>
+                            <th>% Short Ratio Chg</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -485,6 +536,8 @@
                             <td>8.74M</td>
                             <td>1.20</td>
                             <td>59.4%</td>
+                            <td>5.2</td>
+                            <td class="positive">+14.2%</td>
                         </tr>
                         <tr>
                             <td class="symbol-col">SNDL</td>
@@ -499,6 +552,8 @@
                             <td>7.2M</td>
                             <td>1.36</td>
                             <td>47.2%</td>
+                            <td>3.4</td>
+                            <td class="negative">-6.7%</td>
                         </tr>
                         <tr>
                             <td class="symbol-col">CVNA</td>
@@ -513,6 +568,8 @@
                             <td>5.9M</td>
                             <td>1.05</td>
                             <td>52.1%</td>
+                            <td>0.9</td>
+                            <td class="positive">+5.3%</td>
                         </tr>
                     </tbody>
                 </table>
@@ -520,10 +577,10 @@
         </div>
     </section>
 
-    <!-- Bullish Watchlist Section -->
+    <!-- Bullish Section -->
     <section class="data-section" id="bullish">
         <div class="container">
-            <h2 class="section-title">Bullish Watchlist</h2>
+            <h2 class="section-title">Bullish</h2>
             <p class="section-subtitle">Stocks with high volume and positive momentum</p>
             <div class="table-wrapper">
                 <table class="data-table">
@@ -541,6 +598,8 @@
                             <th>Avg Vol</th>
                             <th>Rel Vol</th>
                             <th>DP %</th>
+                            <th>Short Ratio</th>
+                            <th>% Short Ratio Chg</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -557,6 +616,8 @@
                             <td>61.54M</td>
                             <td>0.91</td>
                             <td>42.8%</td>
+                            <td>2.1</td>
+                            <td class="positive">+4.5%</td>
                         </tr>
                         <tr>
                             <td class="symbol-col">MSFT</td>
@@ -571,6 +632,8 @@
                             <td>26.18M</td>
                             <td>0.91</td>
                             <td>38.5%</td>
+                            <td>1.7</td>
+                            <td class="positive">+2.9%</td>
                         </tr>
                         <tr>
                             <td class="symbol-col">NVDA</td>
@@ -585,6 +648,8 @@
                             <td>47.89M</td>
                             <td>0.91</td>
                             <td>46.2%</td>
+                            <td>1.4</td>
+                            <td class="positive">+3.2%</td>
                         </tr>
                     </tbody>
                 </table>
@@ -592,10 +657,10 @@
         </div>
     </section>
     
-    <!-- Bearish Watchlist Section -->
+    <!-- Bearish Section -->
     <section class="data-section" id="bearish">
         <div class="container">
-            <h2 class="section-title">Bearish Watchlist</h2>
+            <h2 class="section-title">Bearish</h2>
             <p class="section-subtitle">Stocks with high volume and negative momentum</p>
             <div class="table-wrapper">
                 <table class="data-table">
@@ -613,6 +678,8 @@
                             <th>Avg Vol</th>
                             <th>Rel Vol</th>
                             <th>DP %</th>
+                            <th>Short Ratio</th>
+                            <th>% Short Ratio Chg</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -629,6 +696,8 @@
                             <td>43.82M</td>
                             <td>1.20</td>
                             <td>44.3%</td>
+                            <td>0.7</td>
+                            <td class="positive">+4.9%</td>
                         </tr>
                         <tr>
                             <td class="symbol-col">RIVN</td>
@@ -643,6 +712,8 @@
                             <td>32.56M</td>
                             <td>1.08</td>
                             <td>52.6%</td>
+                            <td>0.3</td>
+                            <td class="negative">-2.2%</td>
                         </tr>
                         <tr>
                             <td class="symbol-col">HOOD</td>
@@ -657,6 +728,8 @@
                             <td>12.38M</td>
                             <td>1.47</td>
                             <td>47.8%</td>
+                            <td>2.5</td>
+                            <td class="negative">-0.7%</td>
                         </tr>
                     </tbody>
                 </table>
@@ -668,11 +741,21 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-bottom">
-                <p>&copy; 2025 DinoTradez. All rights reserved.</p>
-                <p>Disclaimer: DinoTradez is for informational purposes only. Not financial advice.</p>
+                <p>
+                    <b>Important Notice:</b><br>
+                    The use of DinoTradez site does not guarantee profitable results. This site should not be used as a standalone analysis tool. It is essential to combine it with other forms of analysis, such as fundamental analysis, technical analysis, risk management strategies, and awareness of current market conditions. Always conduct thorough research.
+                </p>
+                <p>
+                    Note: The effectiveness of DinoTradez site can vary based on market conditions and individual trading styles. It's crucial to test strategies thoroughly using historical data before applying them in live trading scenarios.
+                </p>
+                <p>
+                    <b>Disclaimer:</b><br>
+                    "Trading financial instruments involves substantial risk and may not be suitable for all investors. Past performance is not indicative of future results. This website is provided for informational, educational and most importantly entertainment purposes only and should not be considered investment advice. Always conduct your own research before making any financial decisions.  DinoTradez is not liable for your actions."
+                </p>
             </div>
         </div>
     </footer>
-
     <!-- Scripts -->
     <script src="script.js"></script>
+</body>
+</html>

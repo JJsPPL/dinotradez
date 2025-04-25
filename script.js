@@ -203,6 +203,11 @@ function initializeSearchFunctionality() {
         const avgVol = stockData.avgVolume || '-';
         const relVol = '-';
         const dp = '-';
+        // Dummy values for Short Ratio - you should plug in real API data here if available
+        const shortRatio = stockData.shortRatio || (Math.random() * 4 + 0.5).toFixed(2);
+        const prevShortRatio = stockData.prevShortRatio || (shortRatio * (1 + (Math.random() - 0.5) * 0.1)).toFixed(2);
+        const percShortChange = prevShortRatio !== 0 ? (((shortRatio - prevShortRatio) / prevShortRatio) * 100).toFixed(1) : "0.0";
+        const shortRatioClass = percShortChange >= 0 ? 'positive' : 'negative';
 
         // Create row
         const row = document.createElement('tr');
@@ -219,6 +224,8 @@ function initializeSearchFunctionality() {
             <td>${avgVol}</td>
             <td>${relVol}</td>
             <td>${dp}</td>
+            <td>${shortRatio}</td>
+            <td class="${shortRatioClass}">${percShortChange > 0 ? '+' : ''}${percShortChange}%</td>
         `;
 
         // Add right-click to remove
@@ -295,6 +302,41 @@ function initializeMarketUpdates() {
                 }
             }
         });
+
+        // New: Update BTC, Gold, Yield cards
+        const btcValueEl = document.getElementById('btc-value');
+        const btcChangeEl = document.getElementById('btc-change');
+        if (btcValueEl && btcChangeEl) {
+            let val = Number(btcValueEl.textContent.replace(/,/g, ''));
+            const change = ((Math.random() - 0.45) * 1000);
+            val += change;
+            btcValueEl.textContent = val.toLocaleString(undefined, {maximumFractionDigits: 2});
+            const isPos = change >= 0;
+            btcChangeEl.className = `market-change ${isPos ? 'positive' : 'negative'}`;
+            btcChangeEl.querySelector('p').textContent = `${isPos ? '+' : ''}${change.toFixed(0)} (${isPos ? '+' : ''}${(change/val*100).toFixed(1)}%)`;
+        }
+        const goldValueEl = document.getElementById('gold-value');
+        const goldChangeEl = document.getElementById('gold-change');
+        if (goldValueEl && goldChangeEl) {
+            let val = Number(goldValueEl.textContent.replace(/,/g, ''));
+            const change = ((Math.random() - 0.5) * 10);
+            val += change;
+            goldValueEl.textContent = val.toLocaleString(undefined, {maximumFractionDigits: 2});
+            const isPos = change >= 0;
+            goldChangeEl.className = `market-change ${isPos ? 'positive' : 'negative'}`;
+            goldChangeEl.querySelector('p').textContent = `${isPos ? '+' : ''}${change.toFixed(0)} (${isPos ? '+' : ''}${(change/val*100).toFixed(1)}%)`;
+        }
+        const yieldValueEl = document.getElementById('yield-value');
+        const yieldChangeEl = document.getElementById('yield-change');
+        if (yieldValueEl && yieldChangeEl) {
+            let val = Number(yieldValueEl.textContent);
+            const change = ((Math.random() - 0.5) * 0.05);
+            val += change;
+            yieldValueEl.textContent = val.toFixed(2);
+            const isPos = change >= 0;
+            yieldChangeEl.className = `market-change ${isPos ? 'positive' : 'negative'}`;
+            yieldChangeEl.querySelector('p').textContent = `${isPos ? '+' : ''}${change.toFixed(2)} (${isPos ? '+' : ''}${(change/val*100).toFixed(2)}%)`;
+        }
     }, 10000); // Update every 10 seconds
     
     // Also update the stock prices in the tables
