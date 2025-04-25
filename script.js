@@ -131,105 +131,14 @@ function initializeSmoothScrolling() {
 }
 
 // Initialize Stock Search Functionality
+import { fetchStockData } from './fetchStockData.js';
+
 function initializeSearchFunctionality() {
     const searchInput = document.querySelector('.search-input');
     const searchButton = document.querySelector('.search-button');
     const stockTable = document.querySelector('.stock-watchlist .data-table tbody');
     
     if (!searchInput || !searchButton || !stockTable) return;
-    
-    // Sample stock data for demonstration
-    const availableStocks = {
-        'AAPL': { name: 'Apple Inc.', price: 175.42, change: 2.77, percentChange: 1.58, shares: '15.7B', auth: '50.0B', marketCap: '2.74T', mcRatio: 28.65, volume: '55.92M', avgVol: '61.54M', relVol: 0.91, dp: 42.8 },
-        'NVDA': { name: 'NVIDIA Corp.', price: 681.22, change: 10.72, percentChange: 1.60, shares: '2.47B', auth: '4.0B', marketCap: '1.68T', mcRatio: 51.24, volume: '43.52M', avgVol: '47.89M', relVol: 0.91, dp: 46.2 },
-        'MSFT': { name: 'Microsoft Corp.', price: 310.87, change: 2.65, percentChange: 0.86, shares: '7.43B', auth: '24.0B', marketCap: '2.31T', mcRatio: 12.43, volume: '23.79M', avgVol: '26.18M', relVol: 0.91, dp: 38.5 },
-        'TSLA': { name: 'Tesla Inc.', price: 273.58, change: -7.41, percentChange: -2.64, shares: '3.19B', auth: '6.0B', marketCap: '872.48B', mcRatio: 18.75, volume: '118.54M', avgVol: '97.12M', relVol: 1.22, dp: 48.7 },
-        'AMZN': { name: 'Amazon.com Inc.', price: 129.83, change: 1.36, percentChange: 1.06, shares: '10.42B', auth: '25.0B', marketCap: '1.35T', mcRatio: 13.27, volume: '47.82M', avgVol: '51.33M', relVol: 0.93, dp: 45.1 },
-        'META': { name: 'Meta Platforms Inc.', price: 324.62, change: 4.52, percentChange: 1.41, shares: '2.55B', auth: '10.0B', marketCap: '828.15B', mcRatio: 5.96, volume: '14.68M', avgVol: '16.23M', relVol: 0.90, dp: 39.8 },
-        'GOOGL': { name: 'Alphabet Inc.', price: 142.76, change: 2.21, percentChange: 1.57, shares: '12.47B', auth: '30.0B', marketCap: '1.78T', mcRatio: 5.78, volume: '29.31M', avgVol: '28.15M', relVol: 1.04, dp: 41.3 },
-        'INTC': { name: 'Intel Corp.', price: 35.67, change: -1.75, percentChange: -4.68, shares: '4.21B', auth: '10.0B', marketCap: '150.17B', mcRatio: 3.24, volume: '52.63M', avgVol: '43.82M', relVol: 1.20, dp: 44.3 },
-        'RIVN': { name: 'Rivian Automotive Inc.', price: 10.27, change: -0.83, percentChange: -7.48, shares: '948.3M', auth: '4.5B', marketCap: '9.74B', mcRatio: 1.36, volume: '35.28M', avgVol: '32.56M', relVol: 1.08, dp: 52.6 },
-        'HOOD': { name: 'Robinhood Markets Inc.', price: 16.82, change: -1.24, percentChange: -6.87, shares: '729.5M', auth: '2.5B', marketCap: '12.27B', mcRatio: 2.14, volume: '18.24M', avgVol: '12.38M', relVol: 1.47, dp: 47.8 },
-        'DIS': { name: 'Walt Disney Co.', price: 109.12, change: 6.40, percentChange: 6.23, shares: '1.81B', auth: '4.0B', marketCap: '197.9B', mcRatio: 4.08, volume: '47.4M', avgVol: '6.92M', relVol: 6.92, dp: 41.0 }
-    };
-    
-    // Add stock to the watchlist
-    function addStockToWatchlist(ticker) {
-        ticker = ticker.toUpperCase();
-        if (!availableStocks[ticker]) {
-            showMessage(`Stock ${ticker} not found`, 'error');
-            return;
-        }
-        
-        // Check if stock already exists in the table
-        const existingRows = stockTable.querySelectorAll('tr');
-        for (let row of existingRows) {
-            if (row.querySelector('td').textContent === ticker) {
-                showMessage(`${ticker} is already in your watchlist`, 'info');
-                return;
-            }
-        }
-        
-        const stockData = availableStocks[ticker];
-        const isPositive = stockData.change >= 0;
-        
-        // Create row
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td class="symbol-col">${ticker}</td>
-            <td>${stockData.price.toFixed(2)}</td>
-            <td class="${isPositive ? 'positive' : 'negative'}">${isPositive ? '+' : ''}${stockData.change.toFixed(2)}</td>
-            <td class="${isPositive ? 'positive' : 'negative'}">${isPositive ? '+' : ''}${stockData.percentChange.toFixed(2)}%</td>
-            <td>${stockData.shares}</td>
-            <td>${stockData.auth}</td>
-            <td>${stockData.marketCap}</td>
-            <td>${stockData.mcRatio.toFixed(2)}</td>
-            <td>${stockData.volume}</td>
-            <td>${stockData.avgVol}</td>
-            <td>${stockData.relVol.toFixed(2)}</td>
-            <td>${stockData.dp.toFixed(1)}%</td>
-        `;
-        
-        // Add right-click to remove
-        row.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            if (confirm(`Remove ${ticker} from watchlist?`)) {
-                row.classList.add('removing');
-                setTimeout(() => {
-                    row.remove();
-                    showMessage(`${ticker} removed from watchlist`, 'success');
-                }, 300);
-            }
-        });
-        
-        // Add to table with animation
-        row.style.opacity = '0';
-        stockTable.appendChild(row);
-        setTimeout(() => {
-            row.style.opacity = '1';
-        }, 50);
-        
-        showMessage(`${ticker} added to watchlist`, 'success');
-    }
-    
-    // Event listeners
-    searchButton.addEventListener('click', () => {
-        const ticker = searchInput.value.trim();
-        if (ticker) {
-            addStockToWatchlist(ticker);
-            searchInput.value = '';
-        }
-    });
-    
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            const ticker = searchInput.value.trim();
-            if (ticker) {
-                addStockToWatchlist(ticker);
-                searchInput.value = '';
-            }
-        }
-    });
     
     // Helper function to show messages
     function showMessage(message, type = 'info') {
@@ -261,6 +170,97 @@ function initializeSearchFunctionality() {
             }, 300);
         }, 3000);
     }
+
+    // Add stock to the watchlist (now fetches from API)
+    async function addStockToWatchlist(ticker) {
+        ticker = ticker.toUpperCase();
+        // Check if stock already exists in the table
+        const existingRows = stockTable.querySelectorAll('tr');
+        for (let row of existingRows) {
+            if (row.querySelector('td').textContent === ticker) {
+                showMessage(`${ticker} is already in your watchlist`, 'info');
+                return;
+            }
+        }
+
+        // Fetch live stock data
+        showMessage(`Fetching data for ${ticker}...`, 'info');
+        const stockData = await fetchStockData(ticker);
+        if (!stockData) {
+            showMessage(`Stock ${ticker} not found`, 'error');
+            return;
+        }
+        // Some fields might not be available, check for their presence!
+        const isPositive = stockData.change >= 0;
+        const price = stockData.price || stockData.ask || 0;
+        const netChange = stockData.change || 0;
+        const percentChange = stockData.changesPercentage || 0;
+        const shares = stockData.sharesOutstanding || '-';
+        const auth = '-';
+        const marketCap = stockData.marketCap || '-';
+        const mcRatio = '-';
+        const volume = stockData.volume || '-';
+        const avgVol = stockData.avgVolume || '-';
+        const relVol = '-';
+        const dp = '-';
+
+        // Create row
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="symbol-col">${ticker}</td>
+            <td>${Number(price).toFixed(2)}</td>
+            <td class="${isPositive ? 'positive' : 'negative'}">${isPositive ? '+' : ''}${Number(netChange).toFixed(2)}</td>
+            <td class="${isPositive ? 'positive' : 'negative'}">${isPositive ? '+' : ''}${Number(percentChange).toFixed(2)}%</td>
+            <td>${shares}</td>
+            <td>${auth}</td>
+            <td>${marketCap}</td>
+            <td>${mcRatio}</td>
+            <td>${volume}</td>
+            <td>${avgVol}</td>
+            <td>${relVol}</td>
+            <td>${dp}</td>
+        `;
+
+        // Add right-click to remove
+        row.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            if (confirm(`Remove ${ticker} from watchlist?`)) {
+                row.classList.add('removing');
+                setTimeout(() => {
+                    row.remove();
+                    showMessage(`${ticker} removed from watchlist`, 'success');
+                }, 300);
+            }
+        });
+
+        // Add to table with animation
+        row.style.opacity = '0';
+        stockTable.appendChild(row);
+        setTimeout(() => {
+            row.style.opacity = '1';
+        }, 50);
+
+        showMessage(`${ticker} added to watchlist`, 'success');
+    }
+
+    // Event listeners
+    searchButton.addEventListener('click', () => {
+        const ticker = searchInput.value.trim();
+        if (ticker) {
+            addStockToWatchlist(ticker);
+            searchInput.value = '';
+        }
+    });
+
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const ticker = searchInput.value.trim();
+            if (ticker) {
+                addStockToWatchlist(ticker);
+                searchInput.value = '';
+            }
+        }
+    });
 }
 
 // Simulate Market Data Updates
