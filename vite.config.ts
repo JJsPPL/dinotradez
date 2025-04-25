@@ -5,5 +5,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 8080
-  }
+  },
+  base: '/dinotradez/', // Add this line - must match your repository name
 });
