@@ -174,6 +174,8 @@ function initializeSearchFunctionality() {
     // Add stock to the watchlist (now fetches from API)
     async function addStockToWatchlist(ticker) {
         ticker = ticker.toUpperCase();
+        console.log("Searching for ticker:", ticker); // DEBUG
+
         // Check if stock already exists in the table
         const existingRows = stockTable.querySelectorAll('tr');
         for (let row of existingRows) {
@@ -185,8 +187,17 @@ function initializeSearchFunctionality() {
 
         // Fetch live stock data
         showMessage(`Fetching data for ${ticker}...`, 'info');
-        const stockData = await fetchStockData(ticker);
+        let stockData;
+        try {
+            stockData = await fetchStockData(ticker);
+            console.log("Raw API response for", ticker, ":", stockData); // DEBUG
+        } catch (e) {
+            console.error("API call failed for ticker", ticker, e); // DEBUG
+            showMessage(`API failed for ${ticker}: ${e}`, 'error');
+            return;
+        }
         if (!stockData) {
+            console.warn("No stock data returned for", ticker); // DEBUG
             showMessage(`Stock ${ticker} not found`, 'error');
             return;
         }
