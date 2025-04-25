@@ -8,6 +8,7 @@
     "build:dev": "vite build --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JJsPPL/dinotradez.git"
