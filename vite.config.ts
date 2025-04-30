@@ -6,15 +6,10 @@ import path from 'path';
 
 export default defineConfig(({ mode }) => ({
   server: {
-<<<<<<< HEAD
-    port: 8080
-  },
-  base: '/dinotradez/', // Add this line - must match your repository name
-});
-=======
     host: "::",
     port: 8080,
   },
+  base: '/dinotradez/', // This line is from the HEAD version
   plugins: [
     react(),
     mode === 'development' && componentTagger(),
@@ -25,4 +20,3 @@ export default defineConfig(({ mode }) => ({
     },
   },
 }));
->>>>>>> 0b7acf9c2096f457c3733a8199c980336e4528a2
